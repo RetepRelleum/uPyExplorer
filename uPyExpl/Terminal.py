@@ -17,7 +17,8 @@ class Terminal(Text):
         self._catchV = []
         self._prompt = False
         self.__last = '    '
-        self._timeOut=30
+        self._timeOut=1
+        self._timeStamp=0.0
         self.bind("<Button-3>", self.popup)
         self.contextMenu = Menu(None, tearoff=0, takefocus=0)
         self.contextMenu.add_command(label="Clear", command=self.dele)
@@ -45,6 +46,7 @@ class Terminal(Text):
                 pass
 
     def _readLine(self, b): 
+                self._timeStamp=time.time()
                 if self._reread>0:
                     self._reread=self._reread-1   
                 else:
@@ -79,10 +81,10 @@ class Terminal(Text):
         self.mark_set("insert", 'end')
 
     def prompt(self):
-        a=time.time() 
+        self._timeStamp=time.time() 
         while self._prompt:
             time.sleep(0.01)
-            if (time.time()-a>self._timeOut):
+            if time.time()-self._timeStamp>self._timeOut:
                 break
 
     def __send(self,command):
@@ -90,7 +92,8 @@ class Terminal(Text):
             if command:
                 self._socket.send(command)
         else:
-            self._serial.write(command)
+            if command:
+                self._serial.write(command)
 
     def dele(self):
         self.delete(1.0, END)
