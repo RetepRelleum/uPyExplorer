@@ -4,30 +4,24 @@ from tkinter import simpledialog as sdg
 from tkinter.ttk import *
 import _thread
 import time
-import json
+
 
 class Terminal(Text):
-    def __init__(self, master, serial):
+    def __init__(self, master, replCon):
         super().__init__(master)
-        self._serial =serial
+        self.replCon=replCon
         self.keyInput = False
         self.bind("<Key>", self.key)
         self.bind("<ButtonRelease-1>", self.setCursorPos)
-        self._catch = False
-        self._catchV = []
-        self._prompt = False
-        self.__last = '    '
-        self._timeOut=1
         self._timeStamp=0.0
         self.bind("<Button-3>", self.popup)
         self.contextMenu = Menu(None, tearoff=0, takefocus=0)
         self.contextMenu.add_command(label="Clear", command=self.dele)
         self.contextMenu.bind('<Leave>', self.leave)
-        self._webRepl=False
-        self._cpy=False
         self._socket=None
         self._reread=0
-        _thread.start_new_thread(self.readSerial, (self._serial,))
+        self.__serialRead=True
+        self.startSerialRead()
 
     def popup(self, event):
         self.contextMenu.entryconfig(0, state=NORMAL)
@@ -35,15 +29,23 @@ class Terminal(Text):
 
     def leave(self, event):
         self.contextMenu.unpost()
+    
+    def startSerialRead(self):
+        self.__serialRead=True
+        _thread.start_new_thread(self.readSerial, (self.replCon,))
 
-    def readSerial(self, serial):
-        while True:
+
+    def stopSerialRead(self):
+        self.__serialRead=False    
+
+    def readSerial(self, replCon):
+        while self.__serialRead:
             try:
-                char=serial.read() 
-                if not self._webRepl:
-                    self._readLine(char)
-            except:
-                pass
+                char=replCon.uPyRead() 
+                self._readLine(char)
+            except :
+                self.__serialRead=False
+            
 
     def _readLine(self, b): 
                 self._timeStamp=time.time()
@@ -52,14 +54,6 @@ class Terminal(Text):
                 else:
                     self.see(END)
                     a = str(b,encoding='UTF-8',errors="replace")
-                    self.__last += a
-                    self.__last = self.__last[1:]
-                    if self._catch:
-                        self._catchV+=b
-                    if self.__last == ">>> ":
-                        self._prompt = False
-                    if self.__last == "... ":
-                        self._prompt = False
                     self.mark_set(INSERT, END)
                     a = a.replace('\r', '', -1)
                     if a == '\x1b':
@@ -71,59 +65,17 @@ class Terminal(Text):
                             self.insert(END, a)
                         self.keyInput = False
            
-
     def key(self, event):
         self.keyInput = True
         command=event.char.encode()
-        self.__send(command)
+        self.replCon.uPyWrite(command,end='',wait=false)
 
     def setCursorPos(self, event):
         self.mark_set("insert", 'end')
 
-    def prompt(self):
-        self._timeStamp=time.time() 
-        while self._prompt:
-            time.sleep(0.01)
-            if time.time()-self._timeStamp>self._timeOut:
-                break
-
-    def __send(self,command):
-        if  self._webRepl:
-            if command:
-                self._socket.send(command)
-        else:
-            if command:
-                self._serial.write(command)
-
     def dele(self):
         self.delete(1.0, END)
-        command=b'\n\r'
-        self.__send(command)
-
-
-
-    def uPyWriteln(self, command):
-        self._prompt = True
-        command="{}\r\n".format(command).encode()
-        self.__send(command)
-        self.prompt()
-
-    def uPyWrite(self, command):
-        command="{}\r\n".format(command).encode()
-        self.__send(command)
-
-    def getCommadData(self, command):
-        self._catchV = b""
-        self._catch = True
-        self.uPyWriteln(("ujson.dumps({})".format(command)))
-        self._catch = False
-        s1=self._catchV.find(b'\r\n')+3
-        e1=self._catchV.find(b'\r\n>>> ',s1)-1
-        ret = self._catchV[s1:e1]
-        if self._cpy:
-            return self._catchV[s1-1:e1-7]
-        else:
-            return json.loads(ret)
+        self.replCon.uPyWrite(" ")
 
     def webrepl(self):
         self.uPyWriteln("s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)")
@@ -139,7 +91,6 @@ class Terminal(Text):
         self._socket.connect(server_address)
         self.uPyWriteln("uos.dupterm(conn)")
         time.sleep(1)
-        self._webRepl=True
         while True:
             a=self._socket.recv(1)
             self._readLine(a)

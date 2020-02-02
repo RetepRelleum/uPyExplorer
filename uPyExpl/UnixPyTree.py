@@ -2,14 +2,15 @@
 from tkinter import *
 from tkinter import simpledialog as sdg
 from tkinter.ttk import *
-import os
 import _thread
+import os
 
 class UnixPyTree(Treeview):
-    def __init__(self, master, upTree, terminal, **kw):
+    def __init__(self, master, upTree, terminal,option, **kw):
         super().__init__(master=master, columns=("one", "two"))
         self._upTree = upTree
         self._terminal=terminal
+        self.option=option
 
         self.column("#0", width=270, minwidth=270, stretch=NO)
         self.column("one", width=150, minwidth=150, stretch=NO)
@@ -27,7 +28,7 @@ class UnixPyTree(Treeview):
 
     def getPlatform(self):
         platFormName = sys.platform
-        rootData = os.getcwd()
+        rootData = self.option.path
         self.delete(*self.get_children())
         folder1 = self.insert('', 1,  text=platFormName, values=(
             "", "root uPython Projekt :-)", str(rootData[0])))
@@ -54,7 +55,7 @@ class UnixPyTree(Treeview):
 
     def _copy(self):
         buffSize=40
-        pC = "{}{}".format(os.getcwd(), self.getSelItemPath())
+        pC = "{}{}".format(self.option.path, self.getSelItemPath())
         pD = "{}/{}".format(self._upTree.getSelItemPath(),
                             pC[pC.rfind('/')+1:])
         self._terminal.uPyWriteln("f=open('{}','wb')".format(pD))
@@ -73,7 +74,7 @@ class UnixPyTree(Treeview):
     def display(self):
         b = self._upTree._terminal.index(INSERT)
         self._upTree._terminal.insert(INSERT, '\n')
-        path = '{}{}'.format(os.getcwd(), self.getSelItemPath())
+        path = '{}{}'.format(self.option.path, self.getSelItemPath())
         f = open(path, 'rb')
         a = f.readline()
         while a:

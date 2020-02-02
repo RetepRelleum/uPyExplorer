@@ -4,11 +4,13 @@ from tkinter import simpledialog as sdg
 from tkinter.ttk import *
 import _thread
 
+import os
+
 class MicroPyTree(Treeview):
-    def __init__(self, master, terminal, **kw):
+    def __init__(self, master, replCon, **kw):
         super().__init__(master=master, columns=("one", "two"))
 
-        self._terminal = terminal
+        self.replCon=replCon
  
         self.__unixTree=''
 
@@ -39,7 +41,7 @@ class MicroPyTree(Treeview):
 
     def __mkDir(self, user_input, path):
         if not (user_input == None or user_input == ""):
-            self._terminal.uPyWriteln("uos.mkdir('{}/{}')".format(path, user_input))
+            self.replCon.uPyWrite("uos.mkdir('{}/{}')".format(path, user_input))
             self.insert(self.selection()[0], "end",text=user_input, values=('', "Dir"))
 
     def mkDir(self):
@@ -50,7 +52,7 @@ class MicroPyTree(Treeview):
 
     def __rmDir(self):
         path = self.getSelItemPath()
-        self._terminal.uPyWriteln("uos.rmdir('{}')".format(path))
+        self.replCon.uPyWrite("uos.rmdir('{}')".format(path))
         self.delete(self.selection()[0])
 
     def rmDir(self):
@@ -58,7 +60,7 @@ class MicroPyTree(Treeview):
 
     def __rmFile(self):
         path = self.getSelItemPath()
-        self._terminal.uPyWriteln("uos.remove('{}')".format(path))
+        self.replCon.uPyWrite("uos.remove('{}')".format(path))
         self.delete(self.selection()[0])
 
     def rmFile(self):
@@ -121,12 +123,12 @@ class MicroPyTree(Treeview):
         dirx = dir
         dataAll = []
 
-        self._terminal.uPyWriteln("itr=uos.ilistdir('{}')".format(dirx))
-        count = self._terminal.getCommadData("sum(1 for _ in itr)")
-        self._terminal.uPyWriteln("itr=uos.ilistdir('{}')".format(dirx))  
+        self.replCon.uPyWrite("itr=uos.ilistdir('{}')".format(dirx))
+        count = self.replCon.getCommadData("sum(1 for _ in itr)")
+        self.replCon.uPyWrite("itr=uos.ilistdir('{}')".format(dirx))  
 
         for x in range(count):
-            dataAll.append(self._terminal.getCommadData("next(itr)"))
+            dataAll.append(self.replCon.getCommadData("next(itr)"))
         for data in dataAll:
             if len(data) == 3:
                 data.append(0)
@@ -145,13 +147,13 @@ class MicroPyTree(Treeview):
 
     def _getPlatform(self):
         try:
-            self._terminal.uPyWriteln("")
-            self._terminal.uPyWriteln("import sys")
-            self._terminal.uPyWriteln("import ujson")
-            self._terminal.uPyWriteln("import os")
+            self.replCon.uPyWrite("",)
+            self.replCon.uPyWrite("import sys")
+            self.replCon.uPyWrite("import ujson")
+            self.replCon.uPyWrite("import os")
 
-            platFormName = self._terminal.getCommadData("sys.platform")
-            rootData = self._terminal.getCommadData("os.stat('/')")
+            platFormName = self.replCon.getCommadData("sys.platform")
+            rootData = self.replCon.getCommadData("os.stat('/')")
 
             self.delete(*self.get_children())
             folder1 = self.insert('', 1,  text=platFormName, values=(
@@ -169,10 +171,8 @@ class MicroPyTree(Treeview):
     def selIsDir(self):
         return not self.item(self.selection()[0], "values")[1] == 'File'
 
-    
-
     def copy(self):
-        self._cpy=True
+        self.replCon._cpy=True
         _thread.start_new_thread(self.__display, ())
 
     def display(self):
@@ -180,35 +180,27 @@ class MicroPyTree(Treeview):
 
     def __display(self):
         path = self.getSelItemPath()
-        self._terminal.uPyWriteln("def runX():")
-        self._terminal.uPyWriteln("f = open('{}', 'r')".format(path))
-        self._terminal.uPyWriteln("a = f.readline()")
-        self._terminal.uPyWriteln("while a:") 
-        self._terminal.uPyWriteln("print(a,end = '')")
-        self._terminal.uPyWriteln("a = f.readline()")
-        self._terminal.uPyWriteln('\b')
-        self._terminal.uPyWriteln("print('')")    
-        self._terminal.uPyWriteln("\b")
-        self._terminal.uPyWriteln("\b")
-        b =int( self._terminal.index(INSERT).split('.')[0])
-        b = b+1
-        b="{}.{}".format(b,0)
-        if self._terminal._cpy:
+        self.replCon.uPyWrite("def runX():")
+        self.replCon.uPyWrite("f = open('{}', 'r')".format(path))
+        self.replCon.uPyWrite("a = f.readline()")
+        self.replCon.uPyWrite("while a:") 
+        self.replCon.uPyWrite("print(a,end = '')")
+        self.replCon.uPyWrite("a = f.readline()")
+        self.replCon.uPyWrite('\b')
+        self.replCon.uPyWrite("print('')")    
+        self.replCon.uPyWrite("\b")
+        self.replCon.uPyWrite("\b")
+        if self.replCon._cpy:
             item = self.selection()[0]
             fname = self.item(item, "text")
             pC = "{}/{}".format(os.getcwd(), fname)
-
-            ft=self.getCommadData("runX()")
+            ft=self.replCon.getCommadData("runX()")
             f=open(pC,'wb')
             f.write(ft)
             f.close()
         else:
-            self._terminal.uPyWriteln("runX()")
-        c =int( self._terminal.index(INSERT).split('.')[0])
-        c="{}.{}".format(c,0)
-        self._terminal.tag_add("here", b, c)
-        self._terminal.tag_config("here", foreground="green")
-        self._terminal.see(END)
-        self._cpy=False
+            self.replCon.uPyWrite("runX()")
+
+
 
 

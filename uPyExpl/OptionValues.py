@@ -1,7 +1,7 @@
 import os
 
 class OptionValues(object):
-    def __init__(self,usb_port:str='',path:str='',iSwRepl:bool=False):
+    def __init__(self,usb_port:str='',path:str=os.getcwd(),iSwRepl:bool=False):
         self.usb_port=usb_port
         if path=='':
             path=os.getcwd()

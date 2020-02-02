@@ -10,7 +10,7 @@ import serial
 
 
 class Option(Frame):
-    def __init__(self, master,  kw=None):
+    def __init__(self, master, kw=None):
         super().__init__(master,  kw=kw)
         f=None
         try:
@@ -40,6 +40,8 @@ class Option(Frame):
         self.label1.grid(row=0, column=0, sticky="NEW", padx=2)
         self.e1=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)
         self.e1.grid(row=0, column=1, sticky="NEW", padx=2)
+        self.e1.current(0)
+        self.op.usb_port=self.e1.get()
 
         try:
             id=self.e1["values"].index(self.op.usb_port)
@@ -73,19 +75,16 @@ class Option(Frame):
         self.c4=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)    
         self.c4.grid(row=4, column=1, sticky="NEW", padx=2)   
 
-
-
-
         try:
             id=self.e1["values"].index(self.op.usb_port)
         except :
             id=0
-
-
-
         
         self.b1=Button(self,text="safe",command=self.safeOp)
         self.b1.grid(row=3, column=0, sticky="NEW", padx=2)
+
+        self.bind("<FocusOut>", self.handle_focusOut)
+
 
     def wRepl(self):
         self.op.iSwRepl=self.CheckVar1.get()
@@ -94,13 +93,12 @@ class Option(Frame):
 
     def safeOp(self):
         f=open('uPyExplorer.json','w')
-
         self.op.usb_port=self.e1.get()
         json.dump(self.op,f,default=lambda o: o.__dict__, indent=4)
         f.close()
 
     def getPath(self):
-        a=filedialog.askdirectory()
+        a=filedialog.askdirectory(initialdir=self.op.path)
         if a:
             self.op.path=a
             self.bu1.configure(text=a)
@@ -129,4 +127,10 @@ class Option(Frame):
             self.e1["values"]=result
         return result
 
+    def getOptionValues(self):
+        return self.op
+
+
+    def handle_focusOut(self,event):
+        self.safeOp()
 
