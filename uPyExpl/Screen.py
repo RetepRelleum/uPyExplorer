@@ -30,7 +30,7 @@ class Screen(Frame):
         self.tree = uPyExpl.MicroPyTree.MicroPyTree(self, self.replCon)
         self.tree.grid(row=0, column=1, sticky="NSEW", padx=5)
 
-        self.unixTree = uPyExpl.UnixPyTree.UnixPyTree(self, self.tree,replCon,self.option)
+        self.unixTree = uPyExpl.UnixPyTree.UnixPyTree(self, self.tree,replCon,self.option,self.terminal)
         self.unixTree.grid(row=0, column=0, sticky="NSEW", padx=5)
         self.tree.setUnixTree(self.unixTree)
         self.unixTree.getPlatform()

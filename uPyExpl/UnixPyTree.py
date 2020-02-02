@@ -6,11 +6,12 @@ import _thread
 import os
 
 class UnixPyTree(Treeview):
-    def __init__(self, master, upTree, terminal,option, **kw):
+    def __init__(self, master, upTree,replCon,option, terminal,**kw):
         super().__init__(master=master, columns=("one", "two"))
         self._upTree = upTree
-        self._terminal=terminal
+        self._replCon=replCon
         self.option=option
+        self.terminal=terminal
 
         self.column("#0", width=270, minwidth=270, stretch=NO)
         self.column("one", width=150, minwidth=150, stretch=NO)
@@ -30,7 +31,7 @@ class UnixPyTree(Treeview):
         platFormName = sys.platform
         rootData = self.option.path
         self.delete(*self.get_children())
-        folder1 = self.insert('', 1,  text=platFormName, values=(
+        folder1 = self.insert('', 1,  text=self.option.path, values=(
             "", "root uPython Projekt :-)", str(rootData[0])))
         self.selection_set(folder1)
         self.fillTree(folder1, rootData)
@@ -55,16 +56,16 @@ class UnixPyTree(Treeview):
 
     def _copy(self):
         buffSize=40
-        pC = "{}{}".format(self.option.path, self.getSelItemPath())
+        pC =  self.getSelItemPath()
         pD = "{}/{}".format(self._upTree.getSelItemPath(),
                             pC[pC.rfind('/')+1:])
-        self._terminal.uPyWriteln("f=open('{}','wb')".format(pD))
+        self._replCon.uPyWrite("f=open('{}','wb')".format(pD))
         f = open(pC, "rb")
         a = f.read(buffSize)
         while a:
-            self._terminal.uPyWriteln("f.write({})".format(a))
+            self._replCon.uPyWrite("f.write({})".format(a))
             a = f.read(buffSize)
-        self._terminal.uPyWriteln("f.close()")
+        self._replCon.uPyWrite("f.close()")
         f.close()
         item = self.selection()[0]
         t = self.item(item, "text")
@@ -72,18 +73,18 @@ class UnixPyTree(Treeview):
                             0], "end",  text=t, values=('', "File"))
 
     def display(self):
-        b = self._upTree._terminal.index(INSERT)
-        self._upTree._terminal.insert(INSERT, '\n')
-        path = '{}{}'.format(self.option.path, self.getSelItemPath())
+        b = self.terminal.index(INSERT)
+        self.terminal.insert(INSERT, '\n')
+        path =  self.getSelItemPath()
         f = open(path, 'rb')
         a = f.readline()
         while a:
-            self._upTree._terminal.insert(INSERT, a)
+            self.terminal.insert(INSERT, a)
             a = f.readline()
-        self._upTree._terminal.tag_add("here", b, INSERT)
-        self._upTree._terminal.tag_config("here", foreground="blue")
-        self._upTree._terminal.insert(INSERT, '\n')
-        self._upTree._terminal.see(END)
+        self.terminal.tag_add("here", b, INSERT)
+        self.terminal.tag_config("here", foreground="blue")
+        self.terminal.insert(INSERT, '\n')
+        self.terminal.see(END)
 
     def popup(self, event):
         """action in event of button 3 on tree view"""

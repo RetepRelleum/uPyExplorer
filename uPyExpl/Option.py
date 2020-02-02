@@ -35,13 +35,11 @@ class Option(Frame):
         self.rowconfigure(5, weight=1)
 
         #Serial -------
-
+        row=0
         self.label1=Label(self,text="USB Port:") 
-        self.label1.grid(row=0, column=0, sticky="NEW", padx=2)
+        self.label1.grid(row=row, column=0, sticky="NE", padx=2)
         self.e1=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)
-        self.e1.grid(row=0, column=1, sticky="NEW", padx=2)
-        self.e1.current(0)
-        self.op.usb_port=self.e1.get()
+        self.e1.grid(row=row, column=1, sticky="NE", padx=2)
 
         try:
             id=self.e1["values"].index(self.op.usb_port)
@@ -49,42 +47,46 @@ class Option(Frame):
             id=0
         self.e1.current(id)
 
+        # Tree
+        row+=1
+
+        self.label2=Label(self,text="Projekt Root") 
+        self.label2.grid(row=row, column=0, sticky="NEW", padx=2)
+
+        
+        self.bu1=Button(self,text=self.op.path,command=self.getPath )
+        self.bu1.grid(row=row, column=1, sticky="NEW", padx=2)
+
+
+
         # wrepl
+        row+=1
         self.CheckVar1 = IntVar()
 
         self.CheckVar1.set(self.op.iSwRepl)
         self.C1 = Checkbutton(self, text = "WRep", variable = self.CheckVar1 ,onvalue = 1, offvalue = 0,command=self.wRepl)
-        self.C1.grid(row=1, column=0, sticky="NEW", padx=2)
+        self.C1.grid(row=row, column=0, sticky="NEW", padx=2)
         self.wRepl()
 
         self.label3=Label(self,text="Host") 
-        self.label3.grid(row=1, column=1, sticky="NEW", padx=2)
-        # Tree
+        self.label3.grid(row=row, column=1, sticky="NEW", padx=2)
 
-        self.label2=Label(self,text="Projekt Root") 
-        self.label2.grid(row=2, column=0, sticky="NEW", padx=2)
-
-        
-        self.bu1=Button(self,text=self.op.path,command=self.getPath )
-        self.bu1.grid(row=2, column=1, sticky="NEW", padx=2)
 
         # password 
+        row+=1
         self.label4=Label(self,text="SSID") 
-        self.label4.grid(row=4, column=0, sticky="NEW", padx=2)   
+        self.label4.grid(row=row, column=0, sticky="NEW", padx=2)   
 
         self.c4=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)    
-        self.c4.grid(row=4, column=1, sticky="NEW", padx=2)   
+        self.c4.grid(row=row, column=1, sticky="NEW", padx=2)   
 
         try:
             id=self.e1["values"].index(self.op.usb_port)
         except :
             id=0
         
-        self.b1=Button(self,text="safe",command=self.safeOp)
-        self.b1.grid(row=3, column=0, sticky="NEW", padx=2)
 
         self.bind("<FocusOut>", self.handle_focusOut)
-
 
     def wRepl(self):
         self.op.iSwRepl=self.CheckVar1.get()
