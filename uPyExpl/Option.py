@@ -27,19 +27,29 @@ class Option(Frame):
         self.columnconfigure(1, weight=1)
         self.columnconfigure(2, weight=1)
         self.columnconfigure(3, weight=1)
+        self.columnconfigure(4, weight=1)
+        self.columnconfigure(5, weight=1)
+        self.columnconfigure(6, weight=1)
+        self.columnconfigure(7, weight=1)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=1)
         self.rowconfigure(3, weight=1)
         self.rowconfigure(4, weight=1)
         self.rowconfigure(5, weight=1)
+        self.rowconfigure(6, weight=1)
+        self.rowconfigure(7, weight=1)
+        self.rowconfigure(8, weight=1)
+        self.rowconfigure(9, weight=1)
+        self.rowconfigure(10, weight=1)
+        self.rowconfigure(11, weight=1)
 
         #Serial -------
         row=0
         self.label1=Label(self,text="USB Port:") 
-        self.label1.grid(row=row, column=0, sticky="NE", padx=2)
+        self.label1.grid(row=row, column=0, sticky="EW", padx=2)
         self.e1=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)
-        self.e1.grid(row=row, column=1, sticky="NE", padx=2)
+        self.e1.grid(row=row, column=1, sticky="EW", padx=2)
 
         try:
             id=self.e1["values"].index(self.op.usb_port)
@@ -51,11 +61,11 @@ class Option(Frame):
         row+=1
 
         self.label2=Label(self,text="Projekt Root") 
-        self.label2.grid(row=row, column=0, sticky="NEW", padx=2)
+        self.label2.grid(row=row, column=0, sticky="NE", padx=2)
 
         
         self.bu1=Button(self,text=self.op.path,command=self.getPath )
-        self.bu1.grid(row=row, column=1, sticky="NEW", padx=2)
+        self.bu1.grid(row=row, column=1, sticky="NE", padx=2)
 
 
 
@@ -65,20 +75,20 @@ class Option(Frame):
 
         self.CheckVar1.set(self.op.iSwRepl)
         self.C1 = Checkbutton(self, text = "WRep", variable = self.CheckVar1 ,onvalue = 1, offvalue = 0,command=self.wRepl)
-        self.C1.grid(row=row, column=0, sticky="NEW", padx=2)
+        self.C1.grid(row=row, column=0, sticky="NE", padx=2)
         self.wRepl()
 
         self.label3=Label(self,text="Host") 
-        self.label3.grid(row=row, column=1, sticky="NEW", padx=2)
+        self.label3.grid(row=row, column=1, sticky="NE", padx=2)
 
 
         # password 
         row+=1
         self.label4=Label(self,text="SSID") 
-        self.label4.grid(row=row, column=0, sticky="NEW", padx=2)   
+        self.label4.grid(row=row, column=0, sticky="NE", padx=2)   
 
         self.c4=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)    
-        self.c4.grid(row=row, column=1, sticky="NEW", padx=2)   
+        self.c4.grid(row=row, column=1, sticky="NE", padx=2)   
 
         try:
             id=self.e1["values"].index(self.op.usb_port)
