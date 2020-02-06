@@ -41,8 +41,10 @@ class MicroPyTree(Treeview):
 
     def __mkDir(self, user_input, path):
         if not (user_input == None or user_input == ""):
+            self.replCon.uPyWrite(" ")
             self.replCon.uPyWrite("uos.mkdir('{}/{}')".format(path, user_input))
             self.insert(self.selection()[0], "end",text=user_input, values=('', "Dir"))
+            self.replCon.uPyWrite(" ",displ=True)
 
     def mkDir(self):
         path = self.getSelItemPath()
@@ -52,15 +54,19 @@ class MicroPyTree(Treeview):
 
     def __rmDir(self):
         path = self.getSelItemPath()
+        self.replCon.uPyWrite(" ")
         self.replCon.uPyWrite("uos.rmdir('{}')".format(path))
+        self.replCon.uPyWrite(" ",displ=True)
         self.delete(self.selection()[0])
 
     def rmDir(self):
         _thread.start_new_thread(self.__rmDir, ())
 
     def __rmFile(self):
+        self.replCon.uPyWrite(" ")
         path = self.getSelItemPath()
         self.replCon.uPyWrite("uos.remove('{}')".format(path))
+        self.replCon.uPyWrite(" ",displ=True)
         self.delete(self.selection()[0])
 
     def rmFile(self):
@@ -109,9 +115,7 @@ class MicroPyTree(Treeview):
         while p:
             t = self.item(p, "text")+"/"+t
             p = self.parent(p)
-        if t.find('/') == -1:
-            t = ''
-        return t[t.find('/'):]
+        return t
 
     def OnDoubleClick(self, event):
         print("you clicked on", self.getSelItemPath())
@@ -122,7 +126,6 @@ class MicroPyTree(Treeview):
         folderx = folder
         dirx = dir
         dataAll = []
-
         self.replCon.uPyWrite("itr=uos.ilistdir('{}')".format(dirx))
         count = self.replCon.getCommadData("sum(1 for _ in itr)")
         self.replCon.uPyWrite("itr=uos.ilistdir('{}')".format(dirx))  
@@ -147,7 +150,7 @@ class MicroPyTree(Treeview):
 
     def _getPlatform(self):
         try:
-            self.replCon.uPyWrite("",)
+            self.replCon.uPyWrite(" ")
             self.replCon.uPyWrite("import sys")
             self.replCon.uPyWrite("import ujson")
             self.replCon.uPyWrite("import os")
@@ -156,17 +159,18 @@ class MicroPyTree(Treeview):
             rootData = self.replCon.getCommadData("os.stat('/')")
 
             self.delete(*self.get_children())
-            folder1 = self.insert('', 1,  text=platFormName, values=(
-                "", "uPy Bord :-)", str(rootData[0])))
+            folder1 = self.insert('', 1,  text='', values=(
+                "", platFormName, str(rootData[0])))
             self.selection_set(folder1)
-
             self.fillTree(folder1, '')    
+            self.replCon.uPyWrite(" ",displ=True)
         except :
             rootData='not con'
             platFormName='not connected'
             folder1 = self.insert('', 1,  text=platFormName, values=("", "uPy Bord :-)", str(rootData[0])))
             self.selection_set(folder1)
             self.fillTree(folder1, '')
+            self.replCon.uPyWrite(" ",displ=True)
 
     def selIsDir(self):
         return not self.item(self.selection()[0], "values")[1] == 'File'
@@ -179,6 +183,7 @@ class MicroPyTree(Treeview):
         _thread.start_new_thread(self.__display, ())
 
     def __display(self):
+        self.replCon.uPyWrite(" ")
         path = self.getSelItemPath()
         self.replCon.uPyWrite("def runX():")
         self.replCon.uPyWrite("f = open('{}', 'r')".format(path))
@@ -198,8 +203,10 @@ class MicroPyTree(Treeview):
             f=open(pC,'wb')
             f.write(ft)
             f.close()
+            self.replCon.uPyWrite(" ",displ=True)
         else:
-            self.replCon.uPyWrite("runX()")
+            self.replCon.uPyWrite("runX()",displ=True)
+
 
 
 

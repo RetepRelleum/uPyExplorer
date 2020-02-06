@@ -9,19 +9,19 @@ class ReplCon():
         self._cpy=False
         self._webRepl=False
         self._prompt = False
-        self._timeOut=1
+        self._timeOut=2
         self._catch = False
         self._catchV = []
         self.__last = '    '
+        self.__silence=False
         try:
-             self._serial=serial.Serial(self.__option.usb_port, baudrate=115200)
+            self.updateConnection()
         except :
             pass
     
     def updateConnection(self):
         if not hasattr(self,"_serial"):
             self._serial=serial.Serial(self.__option.usb_port, baudrate=115200)
-
         if self._serial.name!=self.__option.usb_port:    
             self._serial.close()
             while self._serial.is_open:
@@ -36,7 +36,10 @@ class ReplCon():
     def uPyRead(self):
         b=self._serial.read()
         self.__uPyRead(b)
-        return b
+        if self.__silence:
+            return b''
+        else:
+            return b
 
     def __uPyRead(self,b):
         a = str(b,encoding='UTF-8',errors="replace")
@@ -49,9 +52,15 @@ class ReplCon():
         if self._catch:
             self._catchV+=b
 
-    def uPyWrite(self,command,end="\r\n",wait=True):
+    def uPyWrite(self,command,end="\r\n",wait=True,displ=False):
+        time.sleep(0.02)
         self._prompt = True
-        command="{}{}".format(command,end).encode()
+        if displ:
+            self.__silence=False
+        else:
+            self.__silence=self.__option.isSilence
+        if not end=='':
+            command="{}{}".format(command,end).encode()
         if  self._webRepl:
             if command:
                 self._socket.send(command)
@@ -79,5 +88,6 @@ class ReplCon():
         while self._prompt:
             time.sleep(0.01)
             if time.time()-self._timeStamp>self._timeOut:
+                self.__silence=False
                 break
-
+        self.__silence=False

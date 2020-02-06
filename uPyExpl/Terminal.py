@@ -22,6 +22,7 @@ class Terminal(Text):
         self._reread=0
         self.__serialRead=True
         self.startSerialRead()
+        self.replCon.uPyWrite(" ",displ=True)
 
     def popup(self, event):
         self.contextMenu.entryconfig(0, state=NORMAL)
@@ -48,34 +49,35 @@ class Terminal(Text):
             
 
     def _readLine(self, b): 
-                self._timeStamp=time.time()
-                if self._reread>0:
-                    self._reread=self._reread-1   
+        if b:
+            self._timeStamp=time.time()
+            if self._reread>0:
+                self._reread=self._reread-1   
+            else:
+                self.see(END)
+                a = str(b,encoding='UTF-8',errors="replace")
+                self.mark_set(INSERT, END)
+                a = a.replace('\r', '', -1)
+                if a == '\x1b':
+                    self._reread=2
                 else:
-                    self.see(END)
-                    a = str(b,encoding='UTF-8',errors="replace")
-                    self.mark_set(INSERT, END)
-                    a = a.replace('\r', '', -1)
-                    if a == '\x1b':
-                        self._reread=2
+                    if self.keyInput:
+                        pass
                     else:
-                        if self.keyInput:
-                            pass
-                        else:
-                            self.insert(END, a)
-                        self.keyInput = False
-           
+                        self.insert(END, a)
+                    self.keyInput = False
+        
     def key(self, event):
         self.keyInput = True
         command=event.char.encode()
-        self.replCon.uPyWrite(command,end='',wait=false)
+        self.replCon.uPyWrite(command,end='',wait=False,displ=True)
 
     def setCursorPos(self, event):
         self.mark_set("insert", 'end')
 
     def dele(self):
         self.delete(1.0, END)
-        self.replCon.uPyWrite(" ")
+        self.replCon.uPyWrite(" ",displ=True)
 
     def webrepl(self):
         self.uPyWriteln("s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)")
