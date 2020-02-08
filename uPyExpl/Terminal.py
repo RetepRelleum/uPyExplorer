@@ -21,8 +21,7 @@ class Terminal(Text):
         self._socket=None
         self._reread=0
         self.__serialRead=True
-        self.startSerialRead()
-        self.replCon.uPyWrite(" ",displ=True)
+
 
     def popup(self, event):
         self.contextMenu.entryconfig(0, state=NORMAL)
@@ -38,6 +37,7 @@ class Terminal(Text):
 
     def stopSerialRead(self):
         self.__serialRead=False    
+        self.replCon.uPyWrite(" ",wait=False)
 
     def readSerial(self, replCon):
         while self.__serialRead:
@@ -80,9 +80,9 @@ class Terminal(Text):
         self.replCon.uPyWrite(" ",displ=True)
 
     def webrepl(self):
-        self.uPyWriteln("s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)")
-        self.uPyWriteln("s.bind(('0.0.0.0', 10001))")
-        self.uPyWriteln("s.listen(3)")
+        self.uPyWrite("s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)")
+        self.uPyWrite("s.bind(('0.0.0.0', 10001))")
+        self.uPyWrite("s.listen(3)")
         self.uPyWrite("conn, addr = s.accept()")
         self.uPyWrite("conn.setblocking(False)")
         self.uPyWrite("conn.setsockopt(socket.SOL_SOCKET, 20, uos.dupterm_notify)")

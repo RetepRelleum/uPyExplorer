@@ -5,7 +5,6 @@ import json
 
 class ReplCon():
     def __init__(self,option):
-        self.__option=option
         self._cpy=False
         self._webRepl=False
         self._prompt = False
@@ -14,24 +13,18 @@ class ReplCon():
         self._catchV = []
         self.__last = '    '
         self.__silence=False
-        try:
-            self.updateConnection()
-        except :
-            pass
-    
-    def updateConnection(self):
-        if not hasattr(self,"_serial"):
-            self._serial=serial.Serial(self.__option.usb_port, baudrate=115200)
-        if self._serial.name!=self.__option.usb_port:    
-            self._serial.close()
-            while self._serial.is_open:
-                pass
-            self._serial=serial.Serial(self.__option.usb_port, baudrate=115200)
-            return True
-        else:
-            return False
 
-       
+    
+    def updateConnection(self,option):
+        self.__option=option
+        self._serial=serial.Serial(self.__option.usb_port, baudrate=115200)
+    
+    def closeConnection(self):
+        while self._prompt:
+            time.sleep(0.001)
+        if  hasattr(self,"_serial"):
+            self._serial.close()
+        a=4
 
     def uPyRead(self):
         b=self._serial.read()
@@ -69,15 +62,20 @@ class ReplCon():
                 self._serial.write(command)
         if wait:
             self.prompt()
+        else:
+            self._prompt=False
 
     def getCommadData(self, command):
+        print('getCommadData command:',command )
         self._catchV = b""
         self._catch = True
         self.uPyWrite("ujson.dumps({})".format(command))
         self._catch = False
         s1=self._catchV.find(b'\r\n')+3
         e1=self._catchV.find(b'\r\n>>> ',s1)-1
+
         ret = self._catchV[s1:e1]
+        print('getCommadData _catchV:',ret )
         if self._cpy:
             return self._catchV[s1-1:e1-7]
         else:

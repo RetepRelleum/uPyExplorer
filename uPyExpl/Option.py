@@ -101,9 +101,7 @@ class Option(Frame):
             id=self.e1["values"].index(self.op.usb_port)
         except :
             id=0
-        
 
-        self.bind("<FocusOut>", self.handle_focusOut)
 
     def  silence(self):
         self.op.isSilence=self.isSilence.get()
@@ -125,8 +123,8 @@ class Option(Frame):
             self.op.path=a
             self.bu1.configure(text=a)
 
-
     def serial_ports(self):
+
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]
         elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -136,7 +134,6 @@ class Option(Frame):
             ports = glob.glob('/dev/tty.*')
         else:
             raise EnvironmentError('Unsupported platform')
-
         result = []
         for port in ports:
             try:
@@ -151,7 +148,6 @@ class Option(Frame):
 
     def getOptionValues(self):
         return self.op
-
 
     def handle_focusOut(self,event):
         self.safeOp()
