@@ -27,12 +27,13 @@ class UnixPyTree(Treeview):
         self.contextMenu.add_command(label="Display", command=self.display)
         self.contextMenu.bind('<Leave>', self.leave)
 
+
     def getPlatform(self):
         platFormName = sys.platform
         rootData = self.option.path
         self.delete(*self.get_children())
         folder1 = self.insert('', 1,  text=self.option.path, values=(
-            "", "root uPython Projekt :-)", str(rootData[0])))
+            "", platFormName, str(rootData[0])))
         self.selection_set(folder1)
         self.fillTree(folder1, rootData)
 

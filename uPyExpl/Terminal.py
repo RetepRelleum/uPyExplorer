@@ -79,20 +79,3 @@ class Terminal(Text):
         self.delete(1.0, END)
         self.replCon.uPyWrite(" ",displ=True)
 
-    def webrepl(self):
-        self.uPyWrite("s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)")
-        self.uPyWrite("s.bind(('0.0.0.0', 10001))")
-        self.uPyWrite("s.listen(3)")
-        self.uPyWrite("conn, addr = s.accept()")
-        self.uPyWrite("conn.setblocking(False)")
-        self.uPyWrite("conn.setsockopt(socket.SOL_SOCKET, 20, uos.dupterm_notify)")
-        self.uPyWrite("print( addr) ")
-        self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server_address = ('192.168.1.119', 10001)
-        self._socket.connect(server_address)
-        self.uPyWriteln("uos.dupterm(conn)")
-        time.sleep(1)
-        while True:
-            a=self._socket.recv(1)
-            self._readLine(a)

@@ -7,6 +7,7 @@ import uPyExpl.OptionValues
 import json
 import glob
 import serial
+import socket
 
 
 class Option(Frame):
@@ -49,7 +50,7 @@ class Option(Frame):
         self.label1=Label(self,text="USB Port:") 
         self.label1.grid(row=row, column=0, sticky="EW", padx=2)
         self.e1=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)
-        self.e1.grid(row=row, column=1, sticky="EW", padx=2)
+        self.e1.grid(row=row, column=1, sticky="W", padx=2,columnspan=4)
 
         try:
             id=self.e1["values"].index(self.op.usb_port)
@@ -61,11 +62,11 @@ class Option(Frame):
         row+=1
 
         self.label2=Label(self,text="Projekt Root") 
-        self.label2.grid(row=row, column=0, sticky="NE", padx=2)
+        self.label2.grid(row=row, column=0, sticky="EW", padx=2)
 
         
         self.bu1=Button(self,text=self.op.path,command=self.getPath )
-        self.bu1.grid(row=row, column=1, sticky="NE", padx=2)
+        self.bu1.grid(row=row, column=1, sticky="W", padx=2,columnspan=4)
 
         # Silence
         row+=1
@@ -73,43 +74,30 @@ class Option(Frame):
         self.isSilence = IntVar()
         self.isSilence.set(self.op.isSilence)
         self.C2 = Checkbutton(self, text = "Silence", variable = self.isSilence ,onvalue = 1, offvalue = 0,command=self.silence)
-        self.C2.grid(row=row, column=0, sticky="NE", padx=2)
+        self.C2.grid(row=row, column=0, sticky="EW", padx=2)
         self.silence()
 
 
-        # wrepl
-        row+=1
-        self.CheckVar1 = IntVar()
-        self.CheckVar1.set(self.op.iSwRepl)
-        self.C1 = Checkbutton(self, text = "WRep", variable = self.CheckVar1 ,onvalue = 1, offvalue = 0,command=self.wRepl)
-        self.C1.grid(row=row, column=0, sticky="NE", padx=2)
-        self.wRepl()
-
-        self.label3=Label(self,text="Host") 
-        self.label3.grid(row=row, column=1, sticky="NE", padx=2)
-
+       
 
         # password 
         row+=1
         self.label4=Label(self,text="SSID") 
-        self.label4.grid(row=row, column=0, sticky="NE", padx=2)   
+        self.label4.grid(row=row, column=0, sticky="EW", padx=2)   
 
         self.c4=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)    
-        self.c4.grid(row=row, column=1, sticky="NE", padx=2)   
+        self.c4.grid(row=row, column=1, sticky="W", padx=2,columnspan=4)  
 
         try:
             id=self.e1["values"].index(self.op.usb_port)
         except :
             id=0
 
-
     def  silence(self):
         self.op.isSilence=self.isSilence.get()
 
-    def wRepl(self):
-        self.op.iSwRepl=self.CheckVar1.get()
-
-
+   
+            
 
     def safeOp(self):
         f=open('uPyExplorer.json','w')

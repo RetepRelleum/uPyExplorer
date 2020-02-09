@@ -7,7 +7,6 @@ import  uPyExpl.Tab
 
 
 
-
 if __name__ == "__main__":
 
     root = Tk()
