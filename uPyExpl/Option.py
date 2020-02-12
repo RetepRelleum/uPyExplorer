@@ -8,6 +8,7 @@ import json
 import glob
 import serial
 import socket
+import time
 
 
 class Option(Frame):
@@ -19,9 +20,9 @@ class Option(Frame):
         except :
             pass
 
-        if f:
+        try:
             self.op=uPyExpl.OptionValues.OptionValues.from_json(json.load(f))
-        else:
+        except :
             self.op=uPyExpl.OptionValues.OptionValues()
         
         self.columnconfigure(0, weight=1)
@@ -50,7 +51,7 @@ class Option(Frame):
         self.label1=Label(self,text="USB Port:") 
         self.label1.grid(row=row, column=0, sticky="EW", padx=2)
         self.e1=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)
-        self.e1.grid(row=row, column=1, sticky="W", padx=2,columnspan=4)
+        self.e1.grid(row=row, column=1, sticky="WE", padx=2,columnspan=2)
 
         try:
             id=self.e1["values"].index(self.op.usb_port)
@@ -63,8 +64,6 @@ class Option(Frame):
 
         self.label2=Label(self,text="Projekt Root") 
         self.label2.grid(row=row, column=0, sticky="EW", padx=2)
-
-        
         self.bu1=Button(self,text=self.op.path,command=self.getPath )
         self.bu1.grid(row=row, column=1, sticky="W", padx=2,columnspan=4)
 
@@ -101,7 +100,7 @@ class Option(Frame):
 
     def safeOp(self):
         f=open('uPyExplorer.json','w')
-        self.op.usb_port=self.e1.get()
+        self.op.usb_port=self.e1.get().split()[0]
         json.dump(self.op,f,default=lambda o: o.__dict__, indent=4)
         f.close()
 
@@ -125,9 +124,20 @@ class Option(Frame):
         result = []
         for port in ports:
             try:
-                s = serial.Serial(port,baudrate=115200)
+                s = serial.Serial(port,baudrate=115200,timeout=0.01)
+                s.write(b"\r\n")
+                s.write(b"import machine\r\n")
+                s.write(b"machine.unique_id()\r\n")
+                time.sleep(0.1)
+                a=""
+                while s.inWaiting() :
+                    a+=s.read().decode()
+                    b=5
+                print(a)
+                b=a.split("\r\n")
                 s.close()
-                result.append(port)
+                if a.endswith(">>> "):
+                    result.append((port,b[3]))
             except (OSError, serial.SerialException):
                 pass
         if hasattr(self,"e1"):
