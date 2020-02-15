@@ -6,7 +6,6 @@ import _thread
 
 class ReplCon():
     def __init__(self,option):
-        self._cpy=False
         self._prompt = False
         self._timeOut=2
         self._catch = False
@@ -14,16 +13,11 @@ class ReplCon():
         self.__last = '    '
         self.__silence=False
 
-
-    
     def updateConnection(self,option):
         self.__option=option
         self._serial=serial.Serial(self.__option.usb_port, baudrate=115200)
     
     def closeConnection(self):
-        while self._prompt:
-            time.sleep(0.001)
-
         if  hasattr(self,"_serial"):
             self._serial.close()
 
@@ -62,10 +56,9 @@ class ReplCon():
                 self._serial.write(command)
         if wait:
             self.prompt()
-        else:
             self._prompt=False
 
-    def getCommadData(self, command):
+    def getCommadData(self, command,cpy=False):
         self._catchV = b""
         self._catch = True
         self.uPyWrite("ujson.dumps({})".format(command))
@@ -73,7 +66,7 @@ class ReplCon():
         s1=self._catchV.find(b'\r\n')+3
         e1=self._catchV.find(b'\r\n>>> ',s1)-1
         ret = self._catchV[s1:e1]
-        if self._cpy:
+        if cpy:
             return self._catchV[s1-1:e1-7]
         else:
             return json.loads(ret)

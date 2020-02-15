@@ -17,6 +17,8 @@ class Tab(Notebook):
         self.screen=uPyExpl.Screen.Screen(self,self.replCon,self.option.getOptionValues())
         self.add(self.screen, text="Screen")  
         self.add(self.option, text="Options")
+
+
         self.bind("<<NotebookTabChanged>>", self.notebookTabChanged)
     
     def notebookTabChanged(self, event):

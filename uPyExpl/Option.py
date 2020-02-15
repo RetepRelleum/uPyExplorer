@@ -111,7 +111,6 @@ class Option(Frame):
             self.bu1.configure(text=a)
 
     def serial_ports(self):
-
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]
         elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -133,7 +132,6 @@ class Option(Frame):
                 while s.inWaiting() :
                     a+=s.read().decode()
                     b=5
-                print(a)
                 b=a.split("\r\n")
                 s.close()
                 if a.endswith(">>> "):

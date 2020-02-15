@@ -4,34 +4,34 @@ from tkinter import simpledialog as sdg
 from tkinter.ttk import *
 import _thread
 import os
+import uPyExpl.Tree
 
-class UnixPyTree(Treeview):
-    def __init__(self, master, upTree,replCon,option, terminal,**kw):
+
+class UnixPyTree(uPyExpl.Tree.Tree):
+    def __init__(self, master, replCon, option, terminal, **kw):
         super().__init__(master=master, columns=("one", "two"))
-        self._upTree = upTree
-        self._replCon=replCon
-        self.option=option
-        self.terminal=terminal
+        self._replCon = replCon
+        self.option = option
+        self.terminal = terminal
 
-        self.column("#0", width=270, minwidth=270, stretch=NO)
-        self.column("one", width=150, minwidth=150, stretch=NO)
-        self.column("two", width=400, minwidth=200)
+    def _mkDir(self, user_input, path):
+        a = '{}/{}'.format(path, user_input)
+        os.mkdir(a)
+        super()._mkDir(user_input, path)
 
-        self.heading("#0", text="Name", anchor=W)
-        self.heading("one", text="Size", anchor=W)
-        self.heading("two", text="Type", anchor=W)
+    def _rmDir(self):
+        path = self.getSelItemPath()
+        os.rmdir('{}'.format(path))
+        super()._rmDir()
 
-        self.bind("<Button-3>", self.popup)
-        self.contextMenu = Menu(None, tearoff=0, takefocus=0)
-        self.contextMenu.add_command(label="Copy", command=self.copy)
-        self.contextMenu.add_command(label="Display", command=self.display)
-        self.contextMenu.bind('<Leave>', self.leave)
+    def _rmFile(self):
+        path = self.getSelItemPath()
+        os.remove('{}'.format(path))
+        super()._rmFile()
 
-
-    def getPlatform(self):
+    def _getPlatform(self):
         platFormName = sys.platform
         rootData = self.option.path
-        self.delete(*self.get_children())
         folder1 = self.insert('', 1,  text=self.option.path, values=(
             "", platFormName, str(rootData[0])))
         self.selection_set(folder1)
@@ -44,39 +44,18 @@ class UnixPyTree(Treeview):
         for dat in os.listdir(dir):
             data = os.stat("{}/{}".format(dirx, dat))
             if os.path.isfile("{}/{}".format(dirx, dat)):
-                self.insert(folderx, "end",  text=dat, values=(
-                    data.st_size, "File"))
+                self.insert(folderx, "end",  text=dat,
+                            values=(data.st_size, "File"))
             else:
-                foldery = self.insert(folderx, "end",  text=dat, values=(
-                    data.st_size, "Dir"))
+                foldery = self.insert(
+                    folderx, "end",  text=dat, values=(data.st_size, "Dir"))
                 diry = "{}/{}".format(dirx, dat)
                 self.fillTree(foldery, diry)
 
-    def copy(self):
-        _thread.start_new_thread(self._copy, ())
-
-    def _copy(self):
-        buffSize=40
-        pC =  self.getSelItemPath()
-        pD = "{}/{}".format(self._upTree.getSelItemPath(),
-                            pC[pC.rfind('/')+1:])
-        self._replCon.uPyWrite("f=open('{}','wb')".format(pD))
-        f = open(pC, "rb")
-        a = f.read(buffSize)
-        while a:
-            self._replCon.uPyWrite("f.write({})".format(a))
-            a = f.read(buffSize)
-        self._replCon.uPyWrite("f.close()")
-        f.close()
-        item = self.selection()[0]
-        t = self.item(item, "text")
-        self._upTree.insert(self._upTree.selection()[
-                            0], "end",  text=t, values=('', "File"))
-
-    def display(self):
+    def _display(self):
         b = self.terminal.index(INSERT)
         self.terminal.insert(INSERT, '\n')
-        path =  self.getSelItemPath()
+        path = self.getSelItemPath()
         f = open(path, 'rb')
         a = f.readline()
         while a:
@@ -87,40 +66,19 @@ class UnixPyTree(Treeview):
         self.terminal.insert(INSERT, '\n')
         self.terminal.see(END)
 
-    def popup(self, event):
-        """action in event of button 3 on tree view"""
-        # select row under mouse
-        iid = self.identify_row(event.y)
-        if iid:
-            if self.item(iid, "values")[1] == 'File':
-                self.contextMenu.entryconfig(1, state=NORMAL)
-                if self._upTree.selIsDir():
-                    self.contextMenu.entryconfig(0, state=NORMAL)
+    def _copy(self):
+        buffSize = 40
+        pC = self.getSelItemPath()
+        pD = "{}/{}".format(self._otherTree.getSelItemPath(file=False),
+                            pC[pC.rfind('/')+1:])
+        self._replCon.uPyWrite("f=open('{}','wb')".format(pD))
+        f = open(pC, "rb")
+        a = f.read(buffSize)
+        while a:
+            self._replCon.uPyWrite("f.write({})".format(a))
+            a = f.read(buffSize)
+        self._replCon.uPyWrite("f.close()")
+        f.close()
+       
+        super()._copy()
 
-                else:
-                    self.contextMenu.entryconfig(0, state=DISABLED)
-            else:
-                self.contextMenu.entryconfig(0, state=DISABLED)
-                self.contextMenu.entryconfig(1, state=DISABLED)
-
-            # mouse pointer over item
-            self.selection_set(iid)
-            self.contextMenu.post(event.x_root, event.y_root)
-        else:
-            # mouse pointer not over item
-            # occurs when items do not fill frame
-            # no action required
-            pass
-
-    def leave(self, event):
-        self.contextMenu.unpost()
-
-    def getSelItemPath(self):
-        item = self.selection()[0]
-        t = self.item(item, "text")
-        p = self.parent(item)
-        while p:
-            t = self.item(p, "text")+"/"+t
-            p = self.parent(p)
-        t.find('/')
-        return t[t.find('/'):]
