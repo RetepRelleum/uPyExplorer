@@ -41,11 +41,9 @@ class UnixPyTree(uPyExpl.Tree.Tree):
         for dat in os.listdir(dir):
             data = os.stat("{}/{}".format(dirx, dat))
             if os.path.isfile("{}/{}".format(dirx, dat)):
-                self.insert(folderx, "end",  text=dat,
-                            values=(data.st_size, "File"))
+                self.insert(folderx, "end",  text=dat,values=(data.st_size, "File"))
             else:
-                foldery = self.insert(
-                    folderx, "end",  text=dat, values=(data.st_size, "Dir"))
+                foldery = self.insert(folderx, "end",  text=dat, values=("", "Dir"))
                 diry = "{}/{}".format(dirx, dat)
                 self.fillTree(foldery, diry)
 

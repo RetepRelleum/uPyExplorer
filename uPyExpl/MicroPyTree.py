@@ -29,7 +29,7 @@ class MicroPyTree(uPyExpl.Tree.Tree):
         self.replCon.uPyWrite(" ",displ=True)
 
     def _getPlatform(self):
-        try:
+        if hasattr (self.replCon,"_serial"):
             self.replCon.uPyWrite(" ")
             self.replCon.uPyWrite("import sys")
             self.replCon.uPyWrite("import ujson")
@@ -37,29 +37,31 @@ class MicroPyTree(uPyExpl.Tree.Tree):
             platFormName = self.replCon.getCommadData("sys.platform")
             rootData = self.replCon.getCommadData("os.stat('/')")
             self.folder1 = self.insert('', 1,  text='', values=("", platFormName, str(rootData[0])))
-        except :
-            pass
+            self.replCon.uPyWrite(" ",displ=True)
+        else:
+            self.folder1 = self.insert('', 1,  text='not con', values=("", "uPy Bord :-)", 'not con'))
         super()._getPlatform()
-        self.replCon.uPyWrite(" ",displ=True)
 
+        
     def fillTree(self, folder, dir):
-        folderx = folder
-        dirx = dir
-        dataAll = []
-        self.replCon.uPyWrite("itr=uos.ilistdir('{}')".format(dirx))  
-        count = self.replCon.getCommadData("sum(1 for _ in itr)")
-        self.replCon.uPyWrite("itr=uos.ilistdir('{}')".format(dirx))  
-        for x in range(count):
-            dataAll.append(self.replCon.getCommadData("next(itr)"))
-        for data in dataAll:
-            if len(data) == 3:
-                data.append(0)
-            if data[1] == 0x8000:
-                self.insert(folderx, "end",  text=data[0], values=('' if data[3] == 0 else data[3], "File"))
-            else:
-                foldery = self.insert(folderx, "end",  text=data[0], values=('' if data[3] == 0 else data[3], "Dir"))
-                diry = "{}/{}".format(dirx, data[0])
-                self.fillTree(foldery, diry)
+        if hasattr (self.replCon,"_serial"):
+            folderx = folder
+            dirx = dir
+            dataAll = []
+            self.replCon.uPyWrite("itr=uos.ilistdir('{}')".format(dirx))  
+            count = self.replCon.getCommadData("sum(1 for _ in itr)")
+            self.replCon.uPyWrite("itr=uos.ilistdir('{}')".format(dirx))  
+            for x in range(count):
+                dataAll.append(self.replCon.getCommadData("next(itr)"))
+            for data in dataAll:
+                if len(data) == 3:
+                    data.append(0)
+                if data[1] == 0x8000:
+                    self.insert(folderx, "end",  text=data[0], values=('' if data[3] == 0 else data[3], "File"))
+                else:
+                    foldery = self.insert(folderx, "end",  text=data[0], values=('' if data[3] == 0 else data[3], "Dir"))
+                    diry = "{}/{}".format(dirx, data[0])
+                    self.fillTree(foldery, diry)
 
     def _display(self,cpy=False):
         self.replCon.uPyWrite(" ")

@@ -117,6 +117,7 @@ class Option(Frame):
         return result
 
     def getOptionValues(self):
+        self.op.usb_port=self.e1.get()
         return self.op
 
     def handle_focusOut(self,event):

@@ -70,7 +70,11 @@ class ReplCon():
         if cpy:
             return self._catchV[s1-1:e1-7]
         else:
-            return json.loads(ret)
+            try:
+                ret=json.loads(ret)
+            except:
+                ret=''
+            return ret
 
     def prompt(self):
         self._timeStamp=time.time() 
