@@ -1,11 +1,8 @@
 
 from tkinter import *
-from tkinter import simpledialog as sdg
 from tkinter.ttk import *
-import _thread
 import os
 import uPyExpl.Tree
-
 
 class UnixPyTree(uPyExpl.Tree.Tree):
     def __init__(self, master, replCon, option, terminal, **kw):

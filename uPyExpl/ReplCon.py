@@ -1,8 +1,6 @@
-import socket
 import serial
 import time
 import json
-import _thread
 
 class ReplCon():
     def __init__(self,option):
@@ -14,8 +12,11 @@ class ReplCon():
         self.__silence=False
 
     def updateConnection(self,option):
-        self.__option=option
-        self._serial=serial.Serial(self.__option.usb_port, baudrate=115200)
+        try:
+            self.__option=option
+            self._serial=serial.Serial(self.__option.usb_port.split()[0], baudrate=115200)
+        except:
+            pass
     
     def closeConnection(self):
         if  hasattr(self,"_serial"):

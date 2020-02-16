@@ -1,11 +1,9 @@
 
 from tkinter import *
-from tkinter import simpledialog as sdg
 from tkinter.ttk import *
 import uPyExpl.Terminal
 import uPyExpl.MicroPyTree
 import uPyExpl.UnixPyTree
-
 
 class Screen(Frame):
     def __init__(self, master, replCon,option, kw=None):

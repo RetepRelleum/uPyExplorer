@@ -1,15 +1,12 @@
 from tkinter import *
-from tkinter import simpledialog as sdg
-from tkinter import filedialog 
 from tkinter.ttk import *
+import tkinter.filedialog
 
 import uPyExpl.OptionValues
 import json
 import glob
 import serial
-import socket
 import time
-
 
 class Option(Frame):
     def __init__(self, master, kw=None):
@@ -30,22 +27,12 @@ class Option(Frame):
         self.columnconfigure(2, weight=1)
         self.columnconfigure(3, weight=1)
         self.columnconfigure(4, weight=1)
-        self.columnconfigure(5, weight=1)
-        self.columnconfigure(6, weight=1)
-        self.columnconfigure(7, weight=1)
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=1)
         self.rowconfigure(3, weight=1)
         self.rowconfigure(4, weight=1)
-        self.rowconfigure(5, weight=1)
-        self.rowconfigure(6, weight=1)
-        self.rowconfigure(7, weight=1)
-        self.rowconfigure(8, weight=1)
-        self.rowconfigure(9, weight=1)
-        self.rowconfigure(10, weight=1)
-        self.rowconfigure(11, weight=1)
-
+  
         #Serial -------
         row=0
         self.label1=Label(self,text="USB Port:") 
@@ -54,10 +41,13 @@ class Option(Frame):
         self.e1.grid(row=row, column=1, sticky="WE", padx=2,columnspan=2)
 
         try:
-            id=self.e1["values"].index(self.op.usb_port)
+            id=self.e1["values"].index(self.op.usb_port)           
         except :
             id=0
-        self.e1.current(id)
+        try:
+            self.e1.current(id)
+        except :
+            pass
 
         # Tree
         row+=1
@@ -76,36 +66,20 @@ class Option(Frame):
         self.C2.grid(row=row, column=0, sticky="EW", padx=2)
         self.silence()
 
-
-       
-
-        # password 
-        row+=1
-        self.label4=Label(self,text="SSID") 
-        self.label4.grid(row=row, column=0, sticky="EW", padx=2)   
-
-        self.c4=Combobox(self,values=self.serial_ports(),postcommand=self.serial_ports)    
-        self.c4.grid(row=row, column=1, sticky="W", padx=2,columnspan=4)  
-
-        try:
-            id=self.e1["values"].index(self.op.usb_port)
-        except :
-            id=0
-
     def  silence(self):
         self.op.isSilence=self.isSilence.get()
 
-   
-            
-
     def safeOp(self):
-        f=open('uPyExplorer.json','w')
-        self.op.usb_port=self.e1.get().split()[0]
-        json.dump(self.op,f,default=lambda o: o.__dict__, indent=4)
-        f.close()
-
+        try:
+            self.op.usb_port=self.e1.get()
+            f=open('uPyExplorer.json','w')
+            json.dump(self.op,f,default=lambda o: o.__dict__, indent=4)
+            f.close()
+        except :
+            pass
+ 
     def getPath(self):
-        a=filedialog.askdirectory(initialdir=self.op.path)
+        a=tkinter.filedialog.askdirectory(initialdir=self.op.path)
         if a:
             self.op.path=a
             self.bu1.configure(text=a)

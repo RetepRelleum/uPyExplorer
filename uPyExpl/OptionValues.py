@@ -7,9 +7,7 @@ class OptionValues(object):
             path=os.getcwd()
         self.path=path
         self.isSilence=isSilence
-
-
-
+        
     @classmethod
     def from_json(cls, data):
         return cls(**data)

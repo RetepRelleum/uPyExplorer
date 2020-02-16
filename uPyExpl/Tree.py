@@ -1,8 +1,7 @@
 from tkinter import *
-from tkinter import simpledialog as sdg
 from tkinter.ttk import *
+import tkinter.simpledialog 
 import _thread
-import os
 from abc import ABC, abstractmethod
 
 
@@ -28,15 +27,14 @@ class Tree(Treeview, ABC):
         self.contextMenu.add_command(label="Copy", command=self.copy)
         self.contextMenu.bind('<Leave>', self.leave)
 
-        self.folder1 = self.insert(
-            '', 1,  text='not con', values=("", "uPy Bord :-)", 'not con'))
+        self.folder1 = self.insert('', 1,  text='not con', values=("", "uPy Bord :-)", 'not con'))
     
     def setOtherTree(self,otherTree):
         self._otherTree=otherTree
 
     def mkDir(self):
         path = self.getSelItemPath()
-        user_input = sdg.askstring(
+        user_input = tkinter.simpledialog.askstring(
             "Dir Name?", "input new dir Name", parent=self)
         if not (user_input == None or user_input == ""):
             _thread.start_new_thread(self._mkDir, (user_input, path))

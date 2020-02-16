@@ -1,20 +1,12 @@
 
 from tkinter import *
-from tkinter import simpledialog as sdg
 from tkinter.ttk import *
-import _thread
-
-import os 
 import uPyExpl.Tree
 
 class MicroPyTree(uPyExpl.Tree.Tree):
     def __init__(self, master, replCon, **kw):
         super().__init__(master=master, columns=("one", "two"))
         self.replCon=replCon
-
-
-
-
 
     def _mkDir(self, user_input, path):
         self.replCon.uPyWrite(" ")
@@ -49,7 +41,6 @@ class MicroPyTree(uPyExpl.Tree.Tree):
             pass
         super()._getPlatform()
         self.replCon.uPyWrite(" ",displ=True)
-
 
     def fillTree(self, folder, dir):
         folderx = folder
@@ -100,8 +91,7 @@ class MicroPyTree(uPyExpl.Tree.Tree):
         super()._copy()
 
 
-  #  def selIsDir(self):
-   #     return not self.item(self.selection()[0], "values")[1] == 'File'
+
 
 
 

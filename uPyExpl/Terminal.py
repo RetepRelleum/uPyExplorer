@@ -1,6 +1,5 @@
 
 from tkinter import *
-from tkinter import simpledialog as sdg
 from tkinter.ttk import *
 import _thread
 import time
@@ -47,7 +46,6 @@ class Terminal(Text):
             except :
                 self.__serialRead=False
             
-
     def _readLine(self, b): 
         if b:
             self._timeStamp=time.time()

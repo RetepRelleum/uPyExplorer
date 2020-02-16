@@ -1,11 +1,6 @@
 
 from tkinter import *
-from tkinter import simpledialog as sdg
-from tkinter.ttk import *
 import  uPyExpl.Tab
-
-
-
 
 if __name__ == "__main__":
 
