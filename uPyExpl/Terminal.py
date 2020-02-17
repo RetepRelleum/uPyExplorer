@@ -33,7 +33,6 @@ class Terminal(Text):
         self.__serialRead=True
         _thread.start_new_thread(self.readSerial, (self.replCon,))
 
-
     def stopSerialRead(self):
         self.__serialRead=False    
         self.replCon.uPyWrite(" ",wait=False)

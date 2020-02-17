@@ -20,8 +20,8 @@ class ReplCon():
     
     def closeConnection(self):
         if  hasattr(self,"_serial"):
+            time.sleep(0.01)
             self._serial.close()
-
 
     def uPyRead(self):
 

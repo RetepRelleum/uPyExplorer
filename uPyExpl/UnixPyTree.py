@@ -37,7 +37,6 @@ class UnixPyTree(uPyExpl.Tree.Tree):
     def fillTree(self, folder, dir):
         folderx = folder
         dirx = dir
-        dataAll = []
         for dat in os.listdir(dir):
             data = os.stat("{}/{}".format(dirx, dat))
             if os.path.isfile("{}/{}".format(dirx, dat)):
