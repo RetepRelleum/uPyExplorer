@@ -32,7 +32,7 @@ class Option(Frame):
         self.rowconfigure(2, weight=1)
         self.rowconfigure(3, weight=1)
         self.rowconfigure(4, weight=1)
-  
+   
         #Serial -------
         row=0
         self.label1=Label(self,text="USB Port:") 

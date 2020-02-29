@@ -1,11 +1,12 @@
 import serial
 import time
 import json
+import sys
 
 class ReplCon():
     def __init__(self,option):
         self._prompt = False
-        self._timeOut=2
+        self._timeOut=5
         self._catch = False
         self._catchV = []
         self.__last = '    '
@@ -45,6 +46,7 @@ class ReplCon():
 
     def uPyWrite(self,command,end="\r\n",wait=True,displ=False):
         time.sleep(0.02)
+        self.__last = '    '
         self._prompt = True
         if displ:
             self.__silence=False
@@ -72,8 +74,9 @@ class ReplCon():
         else:
             try:
                 ret=json.loads(ret)
-            except:
-                ret=''
+                
+            except json.JSONDecodeError as jex :
+                ret=self._catchV[s1:e1]
             return ret
 
     def prompt(self):

@@ -1,6 +1,7 @@
 from tkinter import *
 
 import  uPyExpl.Tab
+import sys
 
 if __name__ == "__main__":
 
@@ -17,4 +18,4 @@ if __name__ == "__main__":
     menubar.add_command(label="Quit!", command=root.quit)
     root.config(menu=menubar)
     root.mainloop()
- 
+  
