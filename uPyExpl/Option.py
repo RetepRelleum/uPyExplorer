@@ -16,7 +16,7 @@ class Option(Frame):
             f= open('uPyExplorer.json','rb') 
         except :
             pass
-
+ 
         try:
             self.op=uPyExpl.OptionValues.OptionValues.from_json(json.load(f))
         except :
