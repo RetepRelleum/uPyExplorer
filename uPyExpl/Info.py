@@ -6,14 +6,19 @@ class Info(Frame):
     def __init__(self, master,replCon, kw=None):
         super().__init__(master,  kw=kw) 
         self.replCon=replCon
-
-
-    
-    def focusIn(self):
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
+        self.l=Listbox(self)
+        self.l.grid(row=0, column=0, sticky="EWSN")
+        self.ret=''
         self.row=0
+
+    def focusIn(self):
         _thread.start_new_thread(self._focusIn, ())
     
     def _focusIn(self):
+        self.row=0
+        self.replCon.uPyWrite("")
         self.replCon.uPyWrite("import sys")
         self.addRow("sys.argv")
         self.addRow("sys.byteorder")
@@ -39,6 +44,16 @@ class Info(Frame):
         self.replCon.uPyWrite("import machine") 
         self.addRow("machine.freq()")     
         self.addRow("machine.unique_id()") 
+        self.replCon.uPyWrite("from machine import Pin")
+        x=0
+        self.ret=1
+        while type(self.ret)is int:
+            self.replCon.uPyWrite("p{}=Pin({})".format(x,x))    
+            self.addRow("p{}.value()".format(x)) 
+            self.replCon.uPyWrite("del p{}".format(x))          
+            x=x+1
+        self.l.delete(self.row)
+        self.row=self.row-1
         self.addNl()
         self.replCon.uPyWrite("import micropython")          
         self.addRow("micropython.opt_level()")   
@@ -50,28 +65,31 @@ class Info(Frame):
         self.replCon.uPyWrite("nic = network.WLAN(network.STA_IF)")   
         self.addRow("nic.active()")   
         self.addRow("nic.scan()")   
-        self.addRow("nic.status()")     
+        self.addRow("nic.status()")    
+        self.replCon.uPyWrite("del nic")          
+        self.l.delete(self.row,END)
+ 
 
     def addRow(self,command):
-        text="{} :".format(command)
+
+
         a=self.replCon.getCommadData(command)
+        self.ret=a
         try:
             a=a.decode()
             a=a.replace('\r\n',' ')
         except:
             pass
 
-        label1=Label(self,text=text) 
-        label1.grid(row=self.row, column=0, sticky="EW", padx=2)
-
-        label1=Label(self,text=a) 
-        label1.grid(row=self.row, column=1, sticky="EW", padx=2,columnspan=4)
-        self.row=self.row+1
-
+        text="{} : {}".format(command,a)
+        self.l.insert(self.row,text)
+        self.row+=1
+        
 
     def addNl(self):
-        label1=Label(self,text="") 
-        label1.grid(row=self.row, column=0, sticky="EW", padx=2)
-        self.row=self.row+1
+        text="{}  {}".format(' ',' ')
+        self.l.insert(self.row,text)
+        self.row+=1
+        
 
 

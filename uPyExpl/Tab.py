@@ -20,8 +20,6 @@ class Tab(Notebook):
         self.add(self.screen, text="Screen")  
         self.add(self.option, text="Options")
         self.add(self.info, text="Info")
-
-    
         
         self.bind("<<NotebookTabChanged>>", self.notebookTabChanged)
     

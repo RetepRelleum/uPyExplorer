@@ -34,6 +34,7 @@ class UnixPyTree(uPyExpl.Tree.Tree):
         self.selection_set(folder1)
         self.fillTree(folder1, rootData)
 
+
     def fillTree(self, folder, dir):
         folderx = folder
         dirx = dir
