@@ -28,11 +28,10 @@ class UnixPyTree(uPyExpl.Tree.Tree):
 
     def _getPlatform(self):
         platFormName = sys.platform
-        rootData = self.option.path
-        folder1 = self.insert('', 1,  text=self.option.path, values=(
-            "", platFormName, str(rootData[0])))
-        self.selection_set(folder1)
-        self.fillTree(folder1, rootData)
+        self.rootData = self.option.path
+        self.folder1 = self.insert('', 1,  text=self.option.path, values=(
+            "", platFormName, str(self.rootData[0])))
+        super()._getPlatform()
 
 
     def fillTree(self, folder, dir):

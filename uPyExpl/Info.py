@@ -18,6 +18,7 @@ class Info(Frame):
     
     def _focusIn(self):
         self.row=0
+        self.l.delete(self.row,END)
         self.replCon.uPyWrite("")
         self.replCon.uPyWrite("import sys")
         self.addRow("sys.argv")
@@ -52,7 +53,7 @@ class Info(Frame):
             self.addRow("p{}.value()".format(x)) 
             self.replCon.uPyWrite("del p{}".format(x))          
             x=x+1
-        self.l.delete(self.row)
+        self.l.delete(self.row-1)
         self.row=self.row-1
         self.addNl()
         self.replCon.uPyWrite("import micropython")          
@@ -67,7 +68,7 @@ class Info(Frame):
         self.addRow("nic.scan()")   
         self.addRow("nic.status()")    
         self.replCon.uPyWrite("del nic")          
-        self.l.delete(self.row,END)
+
  
 
     def addRow(self,command):

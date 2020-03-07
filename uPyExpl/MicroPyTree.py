@@ -34,11 +34,12 @@ class MicroPyTree(uPyExpl.Tree.Tree):
             self.replCon.uPyWrite("import ujson")
             self.replCon.uPyWrite("import os")
             platFormName = self.replCon.getCommadData("sys.platform")
-            rootData = self.replCon.getCommadData("os.stat('/')")
-            self.folder1 = self.insert('', 1,  text='', values=("", platFormName, str(rootData[0])))
+            self.rootData = self.replCon.getCommadData("os.stat('/')")
+            self.folder1 = self.insert('', 1,  text='', values=("", platFormName, str(self.rootData[0])))
             self.replCon.uPyWrite(" ",displ=True)
         else:
             self.folder1 = self.insert('', 1,  text='not con', values=("", "uPy Bord :-)", 'not con'))
+        self.rootData=''
         super()._getPlatform()
 
         

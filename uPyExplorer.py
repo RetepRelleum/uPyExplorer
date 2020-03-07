@@ -14,8 +14,6 @@ if __name__ == "__main__":
 
     tab_parent=uPyExpl.Tab.Tab(root)
 
-    menubar = Menu(root)
-    menubar.add_command(label="Quit!", command=root.quit)
-    root.config(menu=menubar)
+    
     root.mainloop()
   

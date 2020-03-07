@@ -64,7 +64,8 @@ class Tree(Treeview, ABC):
     @abstractmethod
     def _getPlatform(self):
         self.selection_set(self.folder1)
-        self.fillTree(self.folder1, '')
+        self.fillTree(self.folder1, self.rootData)
+        self.item(self.folder1, open = True)
 
     def display(self):
         _thread.start_new_thread(self._display, ())
