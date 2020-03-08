@@ -87,3 +87,4 @@ class ReplCon():
                 self.__silence=False
                 break
         self.__silence=False
+        

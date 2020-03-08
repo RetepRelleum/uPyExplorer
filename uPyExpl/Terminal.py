@@ -20,6 +20,11 @@ class Terminal(Text):
         self._socket=None
         self._reread=0
         self.__serialRead=True
+        self.bildClear = PhotoImage(file="png/Clear.png")
+        self.bDelFile= Button(self.master,  command=self.dele,image=self.bildClear )
+        self.bDelFile.grid(row=2,column=0,sticky="W")
+ 
+
 
 
     def popup(self, event):
@@ -72,7 +77,10 @@ class Terminal(Text):
     def setCursorPos(self, event):
         self.mark_set("insert", 'end')
 
-    def dele(self):
+    def _dele(self):
         self.delete(1.0, END)
         self.replCon.uPyWrite(" ",displ=True)
+
+    def dele(self): 
+        _thread.start_new_thread(self._dele, ())
 

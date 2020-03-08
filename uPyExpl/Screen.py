@@ -16,10 +16,10 @@ class Screen(Frame):
 
 #        self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=2)
-        self.rowconfigure(2, weight=2)
+        self.rowconfigure(3, weight=2)
 
         self.terminal = uPyExpl.Terminal.Terminal(self, replCon)
-        self.terminal.grid(row=2, column=0, sticky="NSEW", columnspan=2, padx=5, pady=5)
+        self.terminal.grid(row=3, column=0, sticky="NSEW", columnspan=2, padx=5, pady=5)
     
         self.unixTree = uPyExpl.UnixPyTree.UnixPyTree(self,replCon,self.option,self.terminal)
         self.unixTree.grid(row=1, column=0, columnspan=1,sticky="NSEW", padx=5)
@@ -32,6 +32,10 @@ class Screen(Frame):
 
         self.unixTree.frame.grid(row=0, sticky="W",column=0,  padx=5)
         self.tree.frame.grid(row=0, sticky="W",column=1,  padx=5)
+
+        
+
+        
 
     def focusIn(self):
         self.terminal.startSerialRead()
