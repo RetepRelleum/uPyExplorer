@@ -1,11 +1,14 @@
 
 from tkinter.ttk import *
+from tkinter import *
 import uPyExpl.Tree
 
 class MicroPyTree(uPyExpl.Tree.Tree):
     def __init__(self, master, replCon, **kw):
         super().__init__(master=master, columns=("one", "two"))
         self.replCon=replCon
+
+
 
     def _mkDir(self, user_input, path):
         self.replCon.uPyWrite(" ")

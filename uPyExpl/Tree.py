@@ -17,6 +17,7 @@ class Tree(Treeview, ABC):
         self.heading("one", text="Size", anchor=W)
         self.heading("two", text="Type", anchor=W)
         self.bind("<Button-3>", self.popup)
+        self.bind("<<TreeviewSelect>>", self.sele)
 
         self.contextMenu = Menu(None, tearoff=0, takefocus=0)
         self.contextMenu.add_command(label="MkDir", command=self.mkDir)
@@ -28,6 +29,49 @@ class Tree(Treeview, ABC):
         self.contextMenu.bind('<Leave>', self.leave)
 
         self.folder1 = self.insert('', 1,  text='not con', values=("", "uPy Bord :-)", 'not con'))
+
+        self.frame=Frame(master=master)
+
+        self.bildRefresh = tkinter.PhotoImage(file="png/Refresh.png")
+        self.bRefresh= Button(self.frame,  command=self.getPlatform,image=self.bildRefresh )
+        self.bRefresh.grid(row=0,column=1 )
+        self.bildDispl = tkinter.PhotoImage(file="png/Displ.png")
+        self.bDispl= Button(self.frame,  command=self.display,image=self.bildDispl)
+        self.bDispl.grid(row=0,column=2 )
+        self.bildCopy= tkinter.PhotoImage(file="png/Copy.png")
+        self.bCopy= Button(self.frame,  command=self.copy,image=self.bildCopy)
+        self.bCopy.grid(row=0,column=3 )
+        self.bildMkDir = tkinter.PhotoImage(file="png/MkDir.png")
+        self.bMkDir= Button(self.frame,  command=self.mkDir,image=self.bildMkDir )
+        self.bMkDir.grid(row=0,column=4)
+        self.bildRmDir = tkinter.PhotoImage(file="png/RmDir.png")
+        self.bRmDir= Button(self.frame,  command=self.rmDir,image=self.bildRmDir,state=DISABLED )
+        self.bRmDir.grid(row=0,column=5)
+        self.bildDelFile = tkinter.PhotoImage(file="png/DelFile.png")
+        self.bDelFile= Button(self.frame,  command=self.rmFile,image=self.bildDelFile )
+        self.bDelFile.grid(row=0,column=6)
+ 
+    def sele(self,event):
+        item = self.selection()[0]
+        if self.item(item,"value")[1]=='File':
+            self.bMkDir.config(state=DISABLED)
+            self.bRmDir.config(state=DISABLED)
+            self.bDelFile.config(state=NORMAL)
+            self.bDispl.config(state=NORMAL)
+            self.bCopy.config(state=NORMAL)
+        else:
+            self.bMkDir.config(state=NORMAL)
+            a = self.get_children(item)
+            if len(a) == 0:
+                self.bRmDir.config(state=NORMAL)   
+            else:
+                self.bRmDir.config(state=DISABLED) 
+            self.bDelFile.config(state=DISABLED)
+            self.bDispl.config(state=DISABLED)
+            self.bCopy.config(state=DISABLED)
+                    
+
+
     
     def setOtherTree(self,otherTree):
         self._otherTree=otherTree
@@ -63,9 +107,9 @@ class Tree(Treeview, ABC):
 
     @abstractmethod
     def _getPlatform(self):
-        self.selection_set(self.folder1)
         self.fillTree(self.folder1, self.rootData)
         self.item(self.folder1, open = True)
+        self.selection_set(self.folder1)
 
     def display(self):
         _thread.start_new_thread(self._display, ())
