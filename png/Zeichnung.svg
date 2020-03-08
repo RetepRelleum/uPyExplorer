@@ -14,7 +14,7 @@
    viewBox="0 0 100 100"
    version="1.1"
    id="svg8"
-   inkscape:export-filename="/home/relleum/Documents/micropython/uPyExplorer/png/RmDir.png"
+   inkscape:export-filename="/home/relleum/Documents/micropython/uPyExplorer/png/Clear.png"
    inkscape:export-xdpi="8.7085714"
    inkscape:export-ydpi="8.7085714"
    inkscape:version="0.92.4 (f8dce91, 2019-08-02)"
@@ -29,8 +29,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="-12.647725"
-     inkscape:cy="201.51032"
+     inkscape:cx="264.63915"
+     inkscape:cy="196.45956"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -102,15 +102,15 @@
      id="layer1"
      transform="translate(0,-197)">
     <path
-       style="fill:#cfc54b;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-       d="M 10.156242,226.97538 H 46.772168 L 61.739261,212.00829 H 90.06983 v 70.29189 H 10.156242 Z"
+       style="fill:#cfc54b;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 116.52951,178.5996 h 36.61593 l 14.96709,-14.96709 h 28.33057 v 70.29189 h -79.91359 z"
        id="path879"
        inkscape:connector-curvature="0" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot881"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       transform="matrix(2.3747681,0,0,0.99688474,-86.107305,229.83492)"
+       transform="matrix(2.3747681,0,0,0.99688474,20.265967,181.45914)"
        inkscape:export-xdpi="8.7085714"
        inkscape:export-ydpi="8.7085714"><flowRegion
          id="flowRegion883"><rect
@@ -119,5 +119,37 @@
            height="98.994949"
            x="38.385796"
            y="-42.270699" /></flowRegion><flowPara
-         id="flowPara887">-</flowPara></flowRoot>  </g>
+         id="flowPara887">-</flowPara></flowRoot>    <rect
+       style="fill:#f9f9f9;fill-rule:evenodd;stroke-width:0.26458332"
+       id="rect828"
+       width="79.913589"
+       height="70.291878"
+       x="10.156241"
+       y="212.00829"
+       rx="0.13229166"
+       ry="0.13229166" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot830"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,0,197)"><flowRegion
+         id="flowRegion832"><rect
+           id="rect834"
+           width="92.934036"
+           height="107.07617"
+           x="38.385796"
+           y="82.988213" /></flowRegion><flowPara
+         id="flowPara836">&gt;&gt;&gt;</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot838"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,31.537804,248.58302)"><flowRegion
+         id="flowRegion840"><rect
+           id="rect842"
+           width="353.55341"
+           height="340.42142"
+           x="-78.791901"
+           y="-130.15398" /></flowRegion><flowPara
+         id="flowPara844">&gt;&gt;&gt;</flowPara><flowPara
+         id="flowPara846" /></flowRoot>  </g>
 </svg>
