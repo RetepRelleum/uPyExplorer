@@ -11,8 +11,8 @@ class ButtonToolTip(Button):
     def enter(self, event=None):
         x = y = 0
         x, y, cx, cy = self.bbox("insert")
-        x += self.winfo_rootx() + 25
-        y += self.winfo_rooty() + 20
+        x += self.winfo_rootx() + 40
+        y += self.winfo_rooty() + 10
         # creates a toplevel window
         self.tw = Toplevel(self.master)
         # Leaves only the label and removes the app window

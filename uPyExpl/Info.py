@@ -18,7 +18,8 @@ class Info(Frame):
     
     def _focusIn(self):
         self.row=0
-        self.l.framedRow("sys.path")
+        self.l.delete(0,'end')
+        self.addRow("sys.path")
         self.addRow("sys.platform")
         self.addRow("sys.version")
         self.addRow("sys.version_info")
