@@ -3,7 +3,7 @@ from tkinter.ttk import *
 import tkinter.simpledialog 
 import _thread
 from abc import ABC, abstractmethod
-
+import uPyExpl.buttonToolTyp
 
 class Tree(Treeview, ABC):
     def __init__(self, master=None, **kw):
@@ -33,22 +33,22 @@ class Tree(Treeview, ABC):
         self.frame=Frame(master=master)
 
         self.bildRefresh = tkinter.PhotoImage(file="png/Refresh.png")
-        self.bRefresh= Button(self.frame,  command=self.getPlatform,image=self.bildRefresh )
+        self.bRefresh= uPyExpl.buttonToolTyp.ButtonToolTip(self.frame,  command=self.getPlatform,image=self.bildRefresh ,toolTip="Refresh")
         self.bRefresh.grid(row=0,column=1 )
         self.bildDispl = tkinter.PhotoImage(file="png/Displ.png")
-        self.bDispl= Button(self.frame,  command=self.display,image=self.bildDispl)
+        self.bDispl= uPyExpl.buttonToolTyp.ButtonToolTip(self.frame,  command=self.display,image=self.bildDispl,toolTip="Display File")
         self.bDispl.grid(row=0,column=2 )
         self.bildCopy= tkinter.PhotoImage(file="png/Copy.png")
-        self.bCopy= Button(self.frame,  command=self.copy,image=self.bildCopy)
+        self.bCopy= uPyExpl.buttonToolTyp.ButtonToolTip(self.frame,  command=self.copy,image=self.bildCopy,toolTip="Copy File")
         self.bCopy.grid(row=0,column=3 )
         self.bildMkDir = tkinter.PhotoImage(file="png/MkDir.png")
-        self.bMkDir= Button(self.frame,  command=self.mkDir,image=self.bildMkDir )
+        self.bMkDir= uPyExpl.buttonToolTyp.ButtonToolTip(self.frame,  command=self.mkDir,image=self.bildMkDir ,toolTip="MkDir")
         self.bMkDir.grid(row=0,column=4)
         self.bildRmDir = tkinter.PhotoImage(file="png/RmDir.png")
-        self.bRmDir= Button(self.frame,  command=self.rmDir,image=self.bildRmDir,state=DISABLED )
+        self.bRmDir= uPyExpl.buttonToolTyp.ButtonToolTip(self.frame,  command=self.rmDir,image=self.bildRmDir,state=DISABLED ,toolTip="RmDir")
         self.bRmDir.grid(row=0,column=5)
         self.bildDelFile = tkinter.PhotoImage(file="png/DelFile.png")
-        self.bDelFile= Button(self.frame,  command=self.rmFile,image=self.bildDelFile )
+        self.bDelFile= uPyExpl.buttonToolTyp.ButtonToolTip(self.frame,  command=self.rmFile,image=self.bildDelFile ,toolTip="Delete File")
         self.bDelFile.grid(row=0,column=6)
  
     def sele(self,event):

@@ -18,15 +18,7 @@ class Info(Frame):
     
     def _focusIn(self):
         self.row=0
-        self.l.delete(self.row,END)
-        self.replCon.uPyWrite("")
-        self.replCon.uPyWrite("import sys")
-        self.addRow("sys.argv")
-        self.addRow("sys.byteorder")
-        self.addRow("sys.implementation")
-        self.addRow("sys.maxsize")
-        self.addRow("sys.modules")
-        self.addRow("sys.path")
+        self.l.framedRow("sys.path")
         self.addRow("sys.platform")
         self.addRow("sys.version")
         self.addRow("sys.version_info")
