@@ -4,7 +4,7 @@ I actually wanted to program my ESP32. I installed all tools and environments an
 
 Tests with esp32 and esp8266 on Ubuntu and Windows Python 3.X
 
-Installation
+Pre-Installation
 
 python -m pip install pyserial
 
