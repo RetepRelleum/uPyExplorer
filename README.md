@@ -4,8 +4,10 @@ I actually wanted to program my ESP32. I installed all tools and environments an
 
 Tests with esp32 and esp8266 on Ubuntu and Windows Python 3.X
 
-Installation: Open Terminal Execute following command
+Installation: Open a terminal. Run the following command:
  
 pip install uPyExplorer
+
+https://pypi.org/project/uPyExplorer/
 
 ![Image description](https://github.com/RetepRelleum/uPyExplorer/blob/master/doc/screen.png)
