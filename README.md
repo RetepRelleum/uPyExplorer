@@ -4,8 +4,15 @@ I actually wanted to program my ESP32. I installed all tools and environments an
 
 Tests with esp32 and esp8266 on Ubuntu and Windows Python 3.X
 
+<<<<<<< HEAD
 Installation: Open Terminal Execute following command
  
 pip install uPyExplorer
+=======
+Pre-Installation
+
+python -m pip install pyserial
+
+>>>>>>> 043f9548952ec934d840894a25d3cb0cc05ca28e
 
 ![Image description](https://github.com/RetepRelleum/uPyExplorer/blob/master/doc/screen.png)
