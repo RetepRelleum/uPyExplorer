@@ -2,9 +2,9 @@
 from tkinter import *
 from tkinter.ttk import *
 import os
-import uPyExpl.Tree
+import uPyExplorer.Tree
 
-class UnixPyTree(uPyExpl.Tree.Tree):
+class UnixPyTree(uPyExplorer.Tree.Tree):
     def __init__(self, master, replCon, option, terminal, **kw):
         super().__init__(master=master, columns=("one", "two"))
         self._replCon = replCon

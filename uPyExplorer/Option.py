@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter.ttk import *
 import tkinter.filedialog
 
-import uPyExpl.OptionValues
+import uPyExplorer.OptionValues
 import json
 import glob
 import serial
@@ -18,9 +18,9 @@ class Option(Frame):
             pass
  
         try:
-            self.op=uPyExpl.OptionValues.OptionValues.from_json(json.load(f))
+            self.op=uPyExplorer.OptionValues.OptionValues.from_json(json.load(f))
         except :
-            self.op=uPyExpl.OptionValues.OptionValues()
+            self.op=uPyExplorer.OptionValues.OptionValues()
         
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)

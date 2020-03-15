@@ -1,9 +1,9 @@
 
 from tkinter import *
 from tkinter.ttk import *
-import uPyExpl.Terminal
-import uPyExpl.MicroPyTree
-import uPyExpl.UnixPyTree
+import uPyExplorer.Terminal
+import uPyExplorer.MicroPyTree
+import uPyExplorer.UnixPyTree
 
 class Screen(Frame):
     def __init__(self, master, replCon,option, kw=None):
@@ -18,13 +18,13 @@ class Screen(Frame):
         self.rowconfigure(1, weight=2)
         self.rowconfigure(3, weight=2)
 
-        self.terminal = uPyExpl.Terminal.Terminal(self, replCon)
+        self.terminal = uPyExplorer.Terminal.Terminal(self, replCon)
         self.terminal.grid(row=3, column=0, sticky="NSEW", columnspan=2, padx=5, pady=5)
     
-        self.unixTree = uPyExpl.UnixPyTree.UnixPyTree(self,replCon,self.option,self.terminal)
+        self.unixTree = uPyExplorer.UnixPyTree.UnixPyTree(self,replCon,self.option,self.terminal)
         self.unixTree.grid(row=1, column=0, columnspan=1,sticky="NSEW", padx=5)
 
-        self.tree = uPyExpl.MicroPyTree.MicroPyTree(self, self.replCon)
+        self.tree = uPyExplorer.MicroPyTree.MicroPyTree(self, self.replCon)
         self.tree.grid(row=1, column=1, sticky="NSEW",columnspan=1, padx=5)
 
         self.tree.setOtherTree(self.unixTree)

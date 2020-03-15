@@ -1,10 +1,11 @@
 
 from tkinter import *
 from tkinter.ttk import *
-import uPyExpl.Screen
-import uPyExpl.Option
-import uPyExpl.ReplCon
-import uPyExpl.Info
+
+import uPyExplorer.Screen
+import uPyExplorer.Option
+import uPyExplorer.ReplCon
+import uPyExplorer.Info
 
 class Tab(Notebook):
     def __init__(self, master=None, **kw):
@@ -12,11 +13,11 @@ class Tab(Notebook):
         self.tabFrom='Option'
 
         self.grid(row=0, column=0, sticky="NSEW", padx=5, pady=5)
-        self.option=uPyExpl.Option.Option(self)
+        self.option=uPyExplorer.Option.Option(self)
         
-        self.replCon=uPyExpl.ReplCon.ReplCon(self.option.getOptionValues())
-        self.screen=uPyExpl.Screen.Screen(self,self.replCon,self.option.getOptionValues())
-        self.info=uPyExpl.Info.Info(self,self.replCon)
+        self.replCon=uPyExplorer.ReplCon.ReplCon(self.option.getOptionValues())
+        self.screen=uPyExplorer.Screen.Screen(self,self.replCon,self.option.getOptionValues())
+        self.info=uPyExplorer.Info.Info(self,self.replCon)
         self.add(self.screen, text="Screen")  
         self.add(self.option, text="Options")
         self.add(self.info, text="Info")

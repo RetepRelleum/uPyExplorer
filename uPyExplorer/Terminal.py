@@ -3,7 +3,8 @@ from tkinter import *
 from tkinter.ttk import *
 import _thread
 import time
-import uPyExpl.buttonToolTyp
+import uPyExplorer.buttonToolTyp
+import os
 
 
 class Terminal(Text):
@@ -21,8 +22,9 @@ class Terminal(Text):
         self._socket=None
         self._reread=0
         self.__serialRead=True
-        self.bildClear = PhotoImage(file="png/Clear.png")
-        self.bDelFile= uPyExpl.buttonToolTyp.ButtonToolTip(self.master,  command=self.dele,image=self.bildClear ,toolTip="ClearTerminal")
+        base_folder = os.path.dirname(__file__)
+        self.bildClear = PhotoImage(file="{}/Clear.png".format(base_folder))
+        self.bDelFile= uPyExplorer.buttonToolTyp.ButtonToolTip(self.master,  command=self.dele,image=self.bildClear ,toolTip="ClearTerminal")
         self.bDelFile.grid(row=2,column=0,sticky="W")
  
 

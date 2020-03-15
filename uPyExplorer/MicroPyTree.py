@@ -1,9 +1,9 @@
 
 from tkinter.ttk import *
 from tkinter import *
-import uPyExpl.Tree
+import uPyExplorer.Tree
 
-class MicroPyTree(uPyExpl.Tree.Tree):
+class MicroPyTree(uPyExplorer.Tree.Tree):
     def __init__(self, master, replCon, **kw):
         super().__init__(master=master, columns=("one", "two"))
         self.replCon=replCon

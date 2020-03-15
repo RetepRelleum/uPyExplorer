@@ -1,13 +1,13 @@
 from tkinter import *
-
-import  uPyExpl.Tab
+import uPyExplorer.Tab
 import sys
 
-if __name__ == "__main__":
+def run():
     root = Tk()
     root.title('Micropython Explorer')
     root.geometry("600x400")
     root.columnconfigure(0, weight=1)
     root.rowconfigure(0, weight=1)
-    tab_parent=uPyExpl.Tab.Tab(root)
+    tab_parent=uPyExplorer.Tab.Tab(root)
     root.mainloop()     
+
