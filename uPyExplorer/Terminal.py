@@ -26,6 +26,9 @@ class Terminal(Text):
         self.bildClear = PhotoImage(file="{}/Clear.png".format(base_folder))
         self.bDelFile= uPyExplorer.buttonToolTyp.ButtonToolTip(self.master,  command=self.dele,image=self.bildClear ,toolTip="ClearTerminal")
         self.bDelFile.grid(row=2,column=0,sticky="W")
+        self.bildStop = PhotoImage(file="{}/Stop.png".format(base_folder))
+        self.bStop= uPyExplorer.buttonToolTyp.ButtonToolTip(self.master,  command=self.stop,image=self.bildStop ,toolTip="Stop Program")
+        self.bStop.grid(row=2,column=1,sticky="W")
  
 
 
@@ -86,4 +89,10 @@ class Terminal(Text):
 
     def dele(self): 
         _thread.start_new_thread(self._dele, ())
+
+    def _stop(self):
+        self.replCon.uPyWrite("\x03",displ=True)   
+
+    def stop(self):
+        _thread.start_new_thread(self._stop, ())
 
