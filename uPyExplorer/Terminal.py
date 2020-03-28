@@ -22,13 +22,15 @@ class Terminal(Text):
         self._socket=None
         self._reread=0
         self.__serialRead=True
+        self.frame=Frame(master=master)
+        self.frame.grid(row=2,column=0,sticky="W")
         base_folder = os.path.dirname(__file__)
         self.bildClear = PhotoImage(file="{}/Clear.png".format(base_folder))
-        self.bDelFile= uPyExplorer.buttonToolTyp.ButtonToolTip(self.master,  command=self.dele,image=self.bildClear ,toolTip="ClearTerminal")
-        self.bDelFile.grid(row=2,column=0,sticky="W")
+        self.bDelFile= uPyExplorer.buttonToolTyp.ButtonToolTip(self.frame,  command=self.dele,image=self.bildClear ,toolTip="ClearTerminal")
+        self.bDelFile.grid(row=0,column=0,sticky="W")
         self.bildStop = PhotoImage(file="{}/Stop.png".format(base_folder))
-        self.bStop= uPyExplorer.buttonToolTyp.ButtonToolTip(self.master,  command=self.stop,image=self.bildStop ,toolTip="Stop Program")
-        self.bStop.grid(row=2,column=1,sticky="W")
+        self.bStop= uPyExplorer.buttonToolTyp.ButtonToolTip(self.frame,  command=self.stop,image=self.bildStop ,toolTip="Stop Program")
+        self.bStop.grid(row=0,column=1,sticky="W")
  
 
 
