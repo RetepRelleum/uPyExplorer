@@ -31,6 +31,9 @@ class Terminal(Text):
         self.bildStop = PhotoImage(file="{}/Stop.png".format(base_folder))
         self.bStop= uPyExplorer.buttonToolTyp.ButtonToolTip(self.frame,  command=self.stop,image=self.bildStop ,toolTip="Stop Program")
         self.bStop.grid(row=0,column=1,sticky="W")
+        self.bildReboot = PhotoImage(file="{}/Reboot.png".format(base_folder))
+        self.bReboot= uPyExplorer.buttonToolTyp.ButtonToolTip(self.frame,  command=self.reboot,image=self.bildReboot ,toolTip="Reboot")
+        self.bReboot.grid(row=0,column=2,sticky="W")
  
 
 
@@ -97,4 +100,11 @@ class Terminal(Text):
 
     def stop(self):
         _thread.start_new_thread(self._stop, ())
+
+    def _reboot(self):
+        self.replCon.uPyWrite("import machine",displ=True)   
+        self.replCon.uPyWrite("machine.reset()",displ=True)   
+
+    def reboot(self):
+        _thread.start_new_thread(self._reboot, ())
 
