@@ -98,7 +98,9 @@ class Option(Frame):
         for port in ports:
             try:
                 s = serial.Serial(port,baudrate=115200,timeout=0.01)
-                s.write(b"\r\n")
+                s.write(b"\x03\r\n")
+                time.sleep(0.1)
+                s.reset_input_buffer()
                 s.write(b"import machine\r\n")
                 s.write(b"machine.unique_id()\r\n")
                 time.sleep(0.1)
@@ -109,7 +111,7 @@ class Option(Frame):
                 b=a.split("\r\n")
                 s.close()
                 if a.endswith(">>> "):
-                    result.append((port,b[3]))
+                    result.append((port,b[2]))
             except (OSError, serial.SerialException):
                 pass
         if hasattr(self,"e1"):
