@@ -54,7 +54,9 @@ class Tree(Treeview, ABC):
         self.bildDelFile = tkinter.PhotoImage(file="{}/DelFile.png".format(base_folder))
         self.bDelFile= uPyExplorer.buttonToolTyp.ButtonToolTip(self.frame,  command=self.rmFile,image=self.bildDelFile ,toolTip="Delete File")
         self.bDelFile.grid(row=0,column=6)
- 
+
+
+    @abstractmethod
     def sele(self,event):
         item = self.selection()[0]
         if self.item(item,"value")[1]=='File':

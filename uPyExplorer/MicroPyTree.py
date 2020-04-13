@@ -1,14 +1,35 @@
-
-from tkinter.ttk import *
 from tkinter import *
+from tkinter.ttk import *
+import tkinter.simpledialog 
 import uPyExplorer.Tree
+import os
+import _thread
+
 
 class MicroPyTree(uPyExplorer.Tree.Tree):
     def __init__(self, master, replCon, **kw):
         super().__init__(master=master, columns=("one", "two"))
-        self.replCon=replCon
+        self.replCon=replCon 
+        base_folder = os.path.dirname(__file__)
+        self.bildRun = tkinter.PhotoImage(file="{}/Run.png".format(base_folder))
+        self.bRun= uPyExplorer.buttonToolTyp.ButtonToolTip(self.frame,  command=self.run,image=self.bildRun ,toolTip="Run")
+        self.bRun.grid(row=0,column=7)
 
+    def sele(self,event):
+        item = self.selection()[0]
+        if self.item(item,"text").lower().endswith('.py'):
+            self.bRun.config(state=NORMAL)
+        else:
+            self.bRun.config(state=DISABLED)
+        super.sele(event)
 
+    def run(self):
+        _thread.start_new_thread(self._run, ())
+    
+    def _run(self):
+        item = self.selection()[0]
+        path=self.item(item,"text")
+        self.replCon.uPyWrite("exec(open('{}').read())".format(path))
 
     def _mkDir(self, user_input, path):
         self.replCon.uPyWrite(" ")
@@ -94,6 +115,7 @@ class MicroPyTree(uPyExplorer.Tree.Tree):
     def _copy(self):
         self._display(cpy=True)
         super()._copy()
+
 
 
 
