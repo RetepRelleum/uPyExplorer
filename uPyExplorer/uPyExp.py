@@ -17,6 +17,7 @@ def run():
         root.iconbitmap("@{}/uPyExplorer.xbm".format(base_folder))
     else:
         root.iconbitmap("{}/uPyExplorer.ico".format(base_folder))
+       
 
     root.mainloop()     
 

@@ -28,7 +28,7 @@ class MicroPyTree(uPyExplorer.Tree.Tree):
     
     def _run(self):
         item = self.selection()[0]
-        path=self.item(item,"text")
+        path=self.getSelItemPath()
         self.replCon.uPyWrite("exec(open('{}').read())".format(path),displ=True)
 
     def _mkDir(self, user_input, path):
