@@ -77,5 +77,5 @@ class UnixPyTree(uPyExplorer.Tree.Tree):
         super()._copy()
 
     def sele(self,event):
-        super.sele(event)
+        super().sele(event)
 

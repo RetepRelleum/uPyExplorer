@@ -21,7 +21,7 @@ class MicroPyTree(uPyExplorer.Tree.Tree):
             self.bRun.config(state=NORMAL)
         else:
             self.bRun.config(state=DISABLED)
-        super.sele(event)
+        super().sele(event)
 
     def run(self):
         _thread.start_new_thread(self._run, ())
@@ -29,7 +29,7 @@ class MicroPyTree(uPyExplorer.Tree.Tree):
     def _run(self):
         item = self.selection()[0]
         path=self.item(item,"text")
-        self.replCon.uPyWrite("exec(open('{}').read())".format(path))
+        self.replCon.uPyWrite("exec(open('{}').read())".format(path),displ=True)
 
     def _mkDir(self, user_input, path):
         self.replCon.uPyWrite(" ")

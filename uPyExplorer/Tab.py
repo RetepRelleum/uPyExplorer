@@ -6,6 +6,7 @@ import uPyExplorer.Screen
 import uPyExplorer.Option
 import uPyExplorer.ReplCon
 import uPyExplorer.Info
+import uPyExplorer.About
 
 class Tab(Notebook):
     def __init__(self, master=None, **kw):
@@ -18,9 +19,11 @@ class Tab(Notebook):
         self.replCon=uPyExplorer.ReplCon.ReplCon(self.option.getOptionValues())
         self.screen=uPyExplorer.Screen.Screen(self,self.replCon,self.option.getOptionValues())
         self.info=uPyExplorer.Info.Info(self,self.replCon)
+        self.about=uPyExplorer.About.About(self)
         self.add(self.screen, text="Screen")  
         self.add(self.option, text="Options")
         self.add(self.info, text="Info")
+        self.add(self.about, text="About")
         
         self.bind("<<NotebookTabChanged>>", self.notebookTabChanged)
     
