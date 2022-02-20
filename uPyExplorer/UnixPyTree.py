@@ -1,8 +1,9 @@
-
-from tkinter import *
-from tkinter.ttk import *
 import os
+import sys
+from tkinter import *
+
 import uPyExplorer.Tree
+
 
 class UnixPyTree(uPyExplorer.Tree.Tree):
     def __init__(self, master, replCon, option, terminal, **kw):
@@ -29,10 +30,9 @@ class UnixPyTree(uPyExplorer.Tree.Tree):
     def _getPlatform(self):
         platFormName = sys.platform
         self.rootData = self.option.path
-        self.folder1 = self.insert('', 1,  text=self.option.path, values=(
+        self.folder1 = self.insert('', 1, text=self.option.path, values=(
             "", platFormName, str(self.rootData[0])))
         super()._getPlatform()
-
 
     def fillTree(self, folder, dir):
         folderx = folder
@@ -40,9 +40,9 @@ class UnixPyTree(uPyExplorer.Tree.Tree):
         for dat in os.listdir(dir):
             data = os.stat("{}/{}".format(dirx, dat))
             if os.path.isfile("{}/{}".format(dirx, dat)):
-                self.insert(folderx, "end",  text=dat,values=(data.st_size, "File"))
+                self.insert(folderx, "end", text=dat, values=(data.st_size, "File"))
             else:
-                foldery = self.insert(folderx, "end",  text=dat, values=("", "Dir"))
+                foldery = self.insert(folderx, "end", text=dat, values=("", "Dir"))
                 diry = "{}/{}".format(dirx, dat)
                 self.fillTree(foldery, diry)
 
@@ -64,7 +64,7 @@ class UnixPyTree(uPyExplorer.Tree.Tree):
         buffSize = 40
         pC = self.getSelItemPath()
         pD = "{}/{}".format(self._otherTree.getSelItemPath(file=False),
-                            pC[pC.rfind('/')+1:])
+                            pC[pC.rfind('/') + 1:])
         self._replCon.uPyWrite("f=open('{}','wb')".format(pD))
         f = open(pC, "rb")
         a = f.read(buffSize)
@@ -73,9 +73,8 @@ class UnixPyTree(uPyExplorer.Tree.Tree):
             a = f.read(buffSize)
         self._replCon.uPyWrite("f.close()")
         f.close()
-       
+
         super()._copy()
 
-    def sele(self,event):
+    def sele(self, event):
         super().sele(event)
-

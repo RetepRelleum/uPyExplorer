@@ -1,3 +1,4 @@
+import sys
 from tkinter import *
 from tkinter.ttk import *
 import tkinter.filedialog
@@ -103,7 +104,7 @@ class Option(Frame):
                 s.reset_input_buffer()
                 s.write(b"import machine\r\n")
                 s.write(b"machine.unique_id()\r\n")
-                time.sleep(0.1)
+                time.sleep(0.5)
                 a=""
                 while s.inWaiting() :
                     a+=s.read().decode()
